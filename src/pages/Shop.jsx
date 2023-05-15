@@ -39,14 +39,14 @@ const Shop = () => {
   //   }
   // };
 
-  const handleSearch = (e) => {
-    const searchTerm = e.target.value;
+  // const handleSearch = (e) => {
+  //   const searchTerm = e.target.value;
 
-    const searchedProducts = products.filter((item) =>
-      item.productName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setProductsData(searchedProducts);
-  };
+  //   const searchedProducts = products.filter((item) =>
+  //     item.productName.toLowerCase().includes(searchTerm.toLowerCase())
+  //   );
+  //   setProductsData(searchedProducts);
+  // };
 
   return (
     <Helmet title="Магазин">
@@ -56,7 +56,7 @@ const Shop = () => {
           <Row>
             <Col lg="3" md="6">
               <div className="filter__widget">
-                <select onChange={handleFilter}>
+                <select>
                   <option>Категории</option>
                   <option value="Хлеб и выпечка">Хлеб и выпечка</option>
                   <option value="Фрукты и овощи">Фрукты и овощи</option>
@@ -92,7 +92,6 @@ const Shop = () => {
                 <input
                   type="text"
                   placeholder="Поиск...."
-                  onChange={handleSearch}
                 />
                 <span>
                   <i class="ri-search-line"></i>
