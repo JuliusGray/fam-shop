@@ -66,6 +66,21 @@ const Tr = ({ item }) => {
     dispatch(cartActions.deleteItem(item.id));
   };
 
+  const addToCard = () => {
+    dispatch(
+      cartActions.addItem({
+        id: item.id,
+        productName: item.productName,
+        price: item.price,
+        imgUrl: item.imgUrl,
+      })
+    );
+  };
+
+  const delProduct = () => {
+    dispatch(cartActions.delItem(item.id));
+  };
+
   return (
     <tr>
       <td>
@@ -73,7 +88,19 @@ const Tr = ({ item }) => {
       </td>
       <td>{item.productName}</td>
       <td>{item.price}₽</td>
-      <td>{item.quantity}px</td>
+      <td>
+        <motion.i
+          whileTap={{ scale: 1.2 }}
+          onClick={delProduct}
+          class="ri-subtract-line"
+        ></motion.i>
+        {item.quantity}px
+        <motion.i
+          whileTap={{ scale: 1.2 }}
+          onClick={addToCard}
+          class="ri-add-line"
+        ></motion.i>
+      </td>
       <td>
         <motion.i
           whileTap={{ scale: 1.2 }}
