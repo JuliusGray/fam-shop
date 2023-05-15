@@ -6,7 +6,7 @@ import { Container, Row, Col } from "reactstrap";
 
 import "../styles/shop.css";
 
-import products from "../assets/data/products";
+// import products from "../assets/data/products";
 import ProductList from "../components/UI/ProductList";
 import useGetData from "../custom-hooks/useGetData";
 
