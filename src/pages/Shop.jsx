@@ -8,9 +8,11 @@ import "../styles/shop.css";
 
 import products from "../assets/data/products";
 import ProductList from "../components/UI/ProductList";
+import useGetData from "../custom-hooks/useGetData";
 
 const Shop = () => {
-  const [productsData, setProductsData] = useState(products);
+  // const [productsData, setProductsData] = useState(products);
+  const { data: products, loading } = useGetData("products");
 
   const handleFilter = (e) => {
     const filterValue = e.target.value;
@@ -103,10 +105,10 @@ const Shop = () => {
       <section className="pt-0">
         <Container>
           <Row>
-            {productsData.length === 0 ? (
+            {products.length === 0 ? (
               <h1 className="text-center fs-4">Продукты не найдены!</h1>
             ) : (
-              <ProductList data={productsData} />
+              <ProductList data={products} />
             )}
           </Row>
         </Container>
