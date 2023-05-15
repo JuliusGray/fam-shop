@@ -14,30 +14,30 @@ const Shop = () => {
   // const [productsData, setProductsData] = useState(products);
   const { data: products, loading } = useGetData("products");
 
-  const handleFilter = (e) => {
-    const filterValue = e.target.value;
-    if (filterValue === "Хлеб и выпечка") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Хлеб и выпечка"
-      );
+  // const handleFilter = (e) => {
+  //   const filterValue = e.target.value;
+  //   if (filterValue === "Хлеб и выпечка") {
+  //     const filteredProducts = products.filter(
+  //       (item) => item.category === "Хлеб и выпечка"
+  //     );
 
-      setProductsData(filteredProducts);
-    }
-    if (filterValue === "Фрукты и овощи") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Фрукты и овощи"
-      );
+  //     setProductsData(filteredProducts);
+  //   }
+  //   if (filterValue === "Фрукты и овощи") {
+  //     const filteredProducts = products.filter(
+  //       (item) => item.category === "Фрукты и овощи"
+  //     );
 
-      setProductsData(filteredProducts);
-    }
-    if (filterValue === "Молоко, сыр, яйцо") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Молоко, сыр, яйцо"
-      );
+  //     setProductsData(filteredProducts);
+  //   }
+  //   if (filterValue === "Молоко, сыр, яйцо") {
+  //     const filteredProducts = products.filter(
+  //       (item) => item.category === "Молоко, сыр, яйцо"
+  //     );
 
-      setProductsData(filteredProducts);
-    }
-  };
+  //     setProductsData(filteredProducts);
+  //   }
+  // };
 
   const handleSearch = (e) => {
     const searchTerm = e.target.value;
