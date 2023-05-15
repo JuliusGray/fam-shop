@@ -8,43 +8,45 @@ import "../styles/shop.css";
 
 import products from "../assets/data/products";
 import ProductList from "../components/UI/ProductList";
+import useGetData from "../custom-hooks/useGetData";
 
 const Shop = () => {
-  const [productsData, setProductsData] = useState(products);
+  // const [productsData, setProductsData] = useState(products);
+  const { data: products, loading } = useGetData("products");
 
-  const handleFilter = (e) => {
-    const filterValue = e.target.value;
-    if (filterValue === "Хлеб и выпечка") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Хлеб и выпечка"
-      );
+  // const handleFilter = (e) => {
+  //   const filterValue = e.target.value;
+  //   if (filterValue === "Хлеб и выпечка") {
+  //     const filteredProducts = products.filter(
+  //       (item) => item.category === "Хлеб и выпечка"
+  //     );
 
-      setProductsData(filteredProducts);
-    }
-    if (filterValue === "Фрукты и овощи") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Фрукты и овощи"
-      );
+  //     setProductsData(filteredProducts);
+  //   }
+  //   if (filterValue === "Фрукты и овощи") {
+  //     const filteredProducts = products.filter(
+  //       (item) => item.category === "Фрукты и овощи"
+  //     );
 
-      setProductsData(filteredProducts);
-    }
-    if (filterValue === "Молоко, сыр, яйцо") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Молоко, сыр, яйцо"
-      );
+  //     setProductsData(filteredProducts);
+  //   }
+  //   if (filterValue === "Молоко, сыр, яйцо") {
+  //     const filteredProducts = products.filter(
+  //       (item) => item.category === "Молоко, сыр, яйцо"
+  //     );
 
-      setProductsData(filteredProducts);
-    }
-  };
+  //     setProductsData(filteredProducts);
+  //   }
+  // };
 
-  const handleSearch = (e) => {
-    const searchTerm = e.target.value;
+  // const handleSearch = (e) => {
+  //   const searchTerm = e.target.value;
 
-    const searchedProducts = products.filter((item) =>
-      item.productName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setProductsData(searchedProducts);
-  };
+  //   const searchedProducts = products.filter((item) =>
+  //     item.productName.toLowerCase().includes(searchTerm.toLowerCase())
+  //   );
+  //   setProductsData(searchedProducts);
+  // };
 
   return (
     <Helmet title="Магазин">
@@ -54,7 +56,7 @@ const Shop = () => {
           <Row>
             <Col lg="3" md="6">
               <div className="filter__widget">
-                <select onChange={handleFilter}>
+                <select>
                   <option>Категории</option>
                   <option value="Хлеб и выпечка">Хлеб и выпечка</option>
                   <option value="Фрукты и овощи">Фрукты и овощи</option>
@@ -90,7 +92,7 @@ const Shop = () => {
                 <input
                   type="text"
                   placeholder="Поиск...."
-                  onChange={handleSearch}
+                  // onChange={handleSearch}
                 />
                 <span>
                   <i class="ri-search-line"></i>
@@ -103,10 +105,10 @@ const Shop = () => {
       <section className="pt-0">
         <Container>
           <Row>
-            {productsData.length === 0 ? (
+            {products.length === 0 ? (
               <h1 className="text-center fs-4">Продукты не найдены!</h1>
             ) : (
-              <ProductList data={productsData} />
+              <ProductList data={products} />
             )}
           </Row>
         </Container>
