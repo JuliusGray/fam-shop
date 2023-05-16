@@ -33,7 +33,7 @@ const Login = () => {
       navigate("/checkout");
     } catch (error) {
       setLoading(false);
-      toast.error(error.message);
+      toast.error("Неправильно введенные данные!");
     }
   };
 
