@@ -47,7 +47,8 @@ const AddProducts = () => {
               category: enterCategory,
               price: enterPrice,
               imgUrl: downloadUrl,
-              rating: "0"
+              rating: "0",
+              dateUpload: `${Date.now}`,
             });
           });
         }
