@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Services from "../services/Services";
 import ProductList from "../components/UI/ProductList";
-import products from "../assets/data/products";
 import Clock from "../components/UI/Clock";
 import counterImg from "../assets/images/Мандарины-скидка.png";
 import { Container, Row, Col } from "reactstrap";
@@ -23,6 +22,7 @@ const Home = () => {
       (item) => item.category === "Хлеб и выпечка"
     );
     setTrend(filterTrendProducts);
+
     const filterBestProducts = products.filter(
       (item) => item.category === "Фрукты и овощи"
     );
@@ -36,7 +36,6 @@ const Home = () => {
           <Row>
             <Col lg="6" md="6">
               <div className="hero__content">
-                {/* <p className="hero__subtitle"> {year}</p> */}
                 <h2>Lorem ipsum dolor sit amet.</h2>
                 <p>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
@@ -62,7 +61,7 @@ const Home = () => {
         <Container>
           <Row>
             <Col lg="12" className="text-center">
-              <h2 className="section__title">Новинки</h2>
+              <h2 className="section__title">Свежий хлеб</h2>
             </Col>
             {loading ? (
               <h5 className="fw-bold">Loading....</h5>

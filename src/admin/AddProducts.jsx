@@ -47,6 +47,7 @@ const AddProducts = () => {
               category: enterCategory,
               price: enterPrice,
               imgUrl: downloadUrl,
+              rating: "0"
             });
           });
         }
