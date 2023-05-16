@@ -61,7 +61,7 @@ const Home = () => {
         <Container>
           <Row>
             <Col lg="12" className="text-center">
-              <h2 className="section__title">Свежий хлеб</h2>
+              <h2 className="section__title">Новинки</h2>
             </Col>
             {loading ? (
               <h5 className="fw-bold">Loading....</h5>
