@@ -33,7 +33,7 @@ const Login = () => {
       navigate("/checkout");
     } catch (error) {
       setLoading(false);
-      toast.error("Неправильно введенные данные!");
+      toast.error("Неверные учетные данные. Пожалуйста, проверьте свой логин и пароль и повторите попытку.");
     }
   };
 

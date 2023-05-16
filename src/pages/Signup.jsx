@@ -41,12 +41,12 @@ const Signup = () => {
       });
 
       setLoading(false);
-      toast.success("Аккаунт создан");
+      toast.success("Успешная регистрация! Добро пожаловать в наш продуктовый магазин. Теперь вы можете войти в свою учетную запись и начать покупки.");
       navigate("/login");
       console.log(user);
     } catch (error) {
       setLoading(false);
-      toast.error("что-то пошло не так");
+      toast.error("Что-то пошло не так!");
     }
   };
 
