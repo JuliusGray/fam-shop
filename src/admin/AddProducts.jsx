@@ -48,7 +48,7 @@ const AddProducts = () => {
               price: enterPrice,
               imgUrl: downloadUrl,
               rating: "0",
-              dateUpload: `${Date.now}`,
+              dateUpload: `${Date.now()}`,
             });
           });
         }
