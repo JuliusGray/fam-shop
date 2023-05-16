@@ -12,13 +12,13 @@ const Checkout = () => {
   const totalAmount = useSelector((state) => state.cart.totalAmount);
 
   return (
-    <Helmet title="Оплата">
-      <CommonSection title="Оплата" />
+    <Helmet title="Заказ">
+      <CommonSection title="Формирование заказа" />
       <section>
         <Container>
           <Row>
             <Col lg="8">
-              <h6 className="mb-4 fw-bold">Платежная информация</h6>
+              <h6 className="mb-4 fw-bold">Адресная информация</h6>
               <Form className="billing__form">
                 <FormGroup className="form__group">
                   <input type="text" placeholder="Введите ваше имя" />
