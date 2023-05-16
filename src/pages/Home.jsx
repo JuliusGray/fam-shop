@@ -24,7 +24,7 @@ const Home = () => {
     setTrend(filterTrendProducts);
 
     const filterBestProducts = products.filter(
-      (item) => item.category === "Фрукты и овощи"
+      (item) => item.rating === "4.9" && "4.8"
     );
     setBest(filterBestProducts);
   }, [products]);
