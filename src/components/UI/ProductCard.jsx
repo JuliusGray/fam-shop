@@ -21,7 +21,7 @@ const ProductCard = ({ item }) => {
         imgUrl: item.imgUrl,
       })
     );
-    toast.success("Продукт добавлен в корзину");
+    toast.success("Товар успешно добавлен в корзину. Вы можете продолжить покупки или перейти к оформлению заказа.");
   };
 
   return (
