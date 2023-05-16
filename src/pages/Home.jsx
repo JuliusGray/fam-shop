@@ -19,7 +19,7 @@ const Home = () => {
 
   useEffect(() => {
     const filterTrendProducts = products.filter(
-      (item) => item.category === "Хлеб и выпечка"
+      (item) => item.dateUpload <= Date.now()
     );
     setTrend(filterTrendProducts);
 
