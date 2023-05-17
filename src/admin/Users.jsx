@@ -6,7 +6,7 @@ import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 
 const Users = () => {
-  const { data: usersData, loading } = useGetData("users");
+  const { data: users, loading } = useGetData("users");
 
   const deleteUser = async (id) => {
     await deleteDoc(doc(db, "users", id));
@@ -38,15 +38,15 @@ const Users = () => {
                     </td>
                   </tr>
                 ) : (
-                  usersData.map((user) => {
-                    <tr key={user.id}>
-                      <td>{user.SurName}</td>
-                      <td>{user.FirstName}</td>
-                      <td>{user.email}</td>
+                  users.map((item) => {
+                    <tr key={item.id}>
+                      <td>{item.SurName}</td>
+                      <td>{item.FirstName}</td>
+                      <td>{item.email}</td>
                       <td>
                         <button
                           onClick={() => {
-                            deleteUser(user.id);
+                            deleteUser(item.id);
                           }}
                           className="btn btn-danger"
                         >
