@@ -34,27 +34,24 @@ const Users = () => {
                 {loading ? (
                   <h5 className="py-5 text-center fw-bold">Loading.....</h5>
                 ) : (
-                  // <tr>
-                  //   <td colSpan="4" className="text-center">
-                  //     <h3 className="py-5 text-center fw-bold">Loading.....</h3>
-                  //   </td>
-                  // </tr>
                   usersData.map((item) => {
-                    <tr key={item.id}>
-                      <td>{item.surname}</td>
-                      <td>{item.firstname}</td>
-                      <td>{item.email}</td>
-                      <td>
-                        <button
-                          onClick={() => {
-                            deleteUser(item.id);
-                          }}
-                          className="btn btn-danger"
-                        >
-                          Удалить
-                        </button>
-                      </td>
-                    </tr>;
+                    return (
+                      <tr key={item.id}>
+                        <td>{item.surname}</td>
+                        <td>{item.firstname}</td>
+                        <td>{item.email}</td>
+                        <td>
+                          <button
+                            onClick={() => {
+                              deleteUser(item.id);
+                            }}
+                            className="btn btn-danger"
+                          >
+                            Удалить
+                          </button>
+                        </td>
+                      </tr>
+                    );
                   })
                 )}
               </tbody>
