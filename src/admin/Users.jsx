@@ -37,8 +37,8 @@ const Users = () => {
                   usersData?.map((item) => {
                     return (
                       <tr key={item.id}>
-                        <td>{item.surname}</td>
-                        <td>{item.firstname}</td>
+                        <td>{item.SurName}</td>
+                        <td>{item.FirstName}</td>
                         <td>{item.email}</td>
                         <td>
                           <button
