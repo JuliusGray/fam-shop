@@ -34,7 +34,7 @@ const Users = () => {
                 {loading ? (
                   <h5 className="py-5 text-center fw-bold">Loading.....</h5>
                 ) : (
-                  usersData.map((item) => {
+                  usersData?.map((item) => {
                     return (
                       <tr key={item.id}>
                         <td>{item.surname}</td>
