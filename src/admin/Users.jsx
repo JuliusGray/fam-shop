@@ -32,12 +32,13 @@ const Users = () => {
               </thead>
               <tbody>
                 {loading ? (
-                  <tr>
-                    <td colSpan="4" className="text-center">
-                      <h3 className="py-5 text-center fw-bold">Loading.....</h3>
-                    </td>
-                  </tr>
+                  <h5 className="py-5 text-center fw-bold">Loading.....</h5>
                 ) : (
+                  // <tr>
+                  //   <td colSpan="4" className="text-center">
+                  //     <h3 className="py-5 text-center fw-bold">Loading.....</h3>
+                  //   </td>
+                  // </tr>
                   usersData.map((item) => {
                     <tr key={item.id}>
                       <td>{item.surname}</td>
