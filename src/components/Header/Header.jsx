@@ -74,12 +74,14 @@ const Header = () => {
       <Container>
         <Row>
           <div className="nav__wrapper">
-            <div className="logo">
-              <img src={logo} alt="logo" />
-              <div>
-                <h1>Семейный</h1>
+            <Link to={"/home"}>
+              <div className="logo">
+                <img src={logo} alt="logo" />
+                <div>
+                  <h1>Семейный</h1>
+                </div>
               </div>
-            </div>
+            </Link>
             <div className="navigation" ref={menuRef} onClick={menuToggle}>
               <ul className="menu">
                 {nav__link.map((item, index) => (
