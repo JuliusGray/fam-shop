@@ -41,7 +41,9 @@ const Signup = () => {
       });
 
       setLoading(false);
-      toast.success("Успешная регистрация! Добро пожаловать в наш продуктовый магазин. Теперь вы можете войти в свою учетную запись и начать покупки.");
+      toast.success(
+        "Успешная регистрация! Добро пожаловать в наш продуктовый магазин. Теперь вы можете войти в свою учетную запись и начать покупки."
+      );
       navigate("/login");
       console.log(user);
     } catch (error) {
@@ -97,6 +99,11 @@ const Signup = () => {
                   </FormGroup>
                   <button type="submit" className="buy__btn auth__btn">
                     Зарегистрироваться
+                  </button>
+                  <button className="buy__btn auth__btn">
+                    <Link to="/ph-signup">
+                      Зарегистрироваться по номеру телефона
+                    </Link>
                   </button>
                   <p>
                     Уже есть аккаунт? <Link to="/login">Авторизоваться</Link>

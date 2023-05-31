@@ -12,6 +12,7 @@ import AddProducts from "../admin/AddProducts";
 import AllProducts from "../admin/AllProducts";
 import Dashboard from "../admin/Dashboard";
 import Users from "../admin/Users";
+import LoginPH from "../pages/LoginPH";
 
 const Routers = () => {
   return (
@@ -30,6 +31,7 @@ const Routers = () => {
       <Route path="shop/:id" element={<ProductDetails />} />
       <Route path="shop" element={<Shop />} />
       <Route path="signup" element={<Signup />} />
+      <Route path="ph-signup" element={<LoginPH />} />
     </Routes>
   );
 };
