@@ -130,7 +130,7 @@ const LoginPH = () => {
               ></OtpInput>
               <button
                 onClick={onOTPVerify}
-                className="bg-emerald-600 w-full flex gap-1 items-center justify-center py-2.5 text-white rounded"
+                className="buy__btn auth__btn"
               >
                 {loading && (
                   <CgSpinner size={20} className="mt-1 animate-spin" />
@@ -152,7 +152,7 @@ const LoginPH = () => {
               <PhoneInput country={"ru"} value={ph} onChange={setPh} />
               <button
                 onClick={onSignup}
-                className="bg-emerald-600 w-full flex gap-1 items-center justify-center py-2.5 text-white rounded"
+                className="buy__btn auth__btn"
               >
                 {loading && (
                   <CgSpinner size={20} className="mt-1 animate-spin" />
