@@ -30,12 +30,18 @@ const ProductCard = ({ item }) => {
     <Col lg="3" md="4" className="mb-2">
       <div className="product__item">
         <div className="product__img">
-        <Link to={`/shop/${item.id}`}><motion.img whileHover={{ scale: 0.9 }} src={item.imgUrl} alt="" /></Link>
+          <Link to={`/shop/${item.id}`}>
+            <motion.img whileHover={{ scale: 0.9 }} src={item.imgUrl} alt="" />
+          </Link>
           {/* <motion.img whileHover={{ scale: 0.9 }} src={item.imgUrl} alt="" /> */}
         </div>
         <div className="p-2 product__info">
           <h3 className="product__name">
-            <Link to={`/shop/${item.id}`}>{item.productName}</Link>
+            <Link to={`/shop/${item.id}`}>
+              {item.productName.length > 24
+                ? `${item.productName.slice(0, 24)}...`
+                : item.productName}
+            </Link>
           </h3>
           <span>{item.category}</span>
         </div>

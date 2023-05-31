@@ -35,7 +35,7 @@ const Signup = () => {
 
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
-        phoneNumber: "",
+        phoneNumber: "не указан",
         FirstName: FirstName,
         SurName: SurName,
         email,

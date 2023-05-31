@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { auth } from "../firebase.config";
+// import { Container, Row, Col, Form, FormGroup } from "reactstrap";
+// import Helmet from "../components/Helmet/Helmet";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 import { setDoc, doc } from "firebase/firestore";
@@ -52,12 +54,12 @@ const LoginPH = () => {
 
   function onSignup(e) {
     e.preventDefault();
-    setLoading(true);
+    // setLoading(true);
     onCaptchVerify();
 
-    const appVerifier = recaptchaVerifier; 
+    const appVerifier = recaptchaVerifier;
 
-    const formatPh = "+" + ph; 
+    const formatPh = "+" + ph;
 
     signInWithPhoneNumber(auth, formatPh, appVerifier)
       .then((confirmationResult) => {
@@ -74,7 +76,7 @@ const LoginPH = () => {
   }
 
   function onOTPVerify() {
-    setLoading(true);
+    // setLoading(true);
     window.confirmationResult
       .confirm(otp)
       .then(async (res) => {
