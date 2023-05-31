@@ -2,7 +2,7 @@ import { BsFillShieldLockFill, BsTelephoneFill } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 
 import OtpInput from "otp-input-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { auth } from "../firebase.config";
@@ -12,17 +12,31 @@ import { setDoc, doc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
 
+const CACHE_KEY_OTP = "cached_otp";
+const CACHE_KEY_PH = "cached_ph";
+
 const LoginPH = () => {
-  const [otp, setOtp] = useState("");
-  const [ph, setPh] = useState("");
+  const [otp, setOtp] = useState(localStorage.getItem(CACHE_KEY_OTP) || "");
+  const [ph, setPh] = useState(localStorage.getItem(CACHE_KEY_PH) || "");
   const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
-  // const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  let recaptchaVerifier = null;
+
+  useEffect(() => {
+    // Сохранение значения otp в локальное хранилище при его изменении
+    localStorage.setItem(CACHE_KEY_OTP, otp);
+  }, [otp]);
+
+  useEffect(() => {
+    // Сохранение значения ph в локальное хранилище при его изменении
+    localStorage.setItem(CACHE_KEY_PH, ph);
+  }, [ph]);
+
   function onCaptchVerify() {
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(
+    if (!recaptchaVerifier) {
+      recaptchaVerifier = new RecaptchaVerifier(
         "recaptcha-container",
         {
           size: "invisible",
@@ -36,20 +50,21 @@ const LoginPH = () => {
     }
   }
 
-  function onSignup() {
+  function onSignup(e) {
+    e.preventDefault();
     setLoading(true);
     onCaptchVerify();
 
-    const appVerifier = window.recaptchaVerifier;
+    const appVerifier = recaptchaVerifier; 
 
-    const formatPh = "+" + ph;
+    const formatPh = "+" + ph; 
 
     signInWithPhoneNumber(auth, formatPh, appVerifier)
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult;
         setLoading(false);
         setShowOTP(true);
-        toast.success("OTP sended successfully!");
+        toast.success("OTP sent successfully!");
       })
       .catch((error) => {
         console.log(error);
@@ -64,7 +79,6 @@ const LoginPH = () => {
       .confirm(otp)
       .then(async (res) => {
         console.log(res);
-        // setUser(res.user);
         const { uid, phoneNumber } = res.user;
 
         await setDoc(doc(db, "users", uid), {

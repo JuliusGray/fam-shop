@@ -54,7 +54,7 @@ const Signup = () => {
   };
 
   return (
-    <Helmet title="Login">
+    <Helmet title="Sign Up">
       <section>
         <Container>
           <Row>
