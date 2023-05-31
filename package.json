@@ -19,6 +19,7 @@
     "react-phone-input-2": "^2.15.1",
     "otp-input-react": "^0.3.0",
     "react-icons": "^4.7.1",
+    "react-hot-toast": "^2.4.0",
     "reactstrap": "^9.1.4",
     "remixicon": "^2.5.0",
     "web-vitals": "^2.1.4"
