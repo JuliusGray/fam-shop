@@ -130,12 +130,12 @@ const LoginPH = () => {
               ></OtpInput>
               <button
                 onClick={onOTPVerify}
-                className="buy__btn auth__btn"
+                className="buy__btn"
               >
                 {loading && (
                   <CgSpinner size={20} className="mt-1 animate-spin" />
                 )}
-                <span>Verify OTP</span>
+                <span>Отправить код</span>
               </button>
             </>
           ) : (
@@ -152,12 +152,12 @@ const LoginPH = () => {
               <PhoneInput country={"ru"} value={ph} onChange={setPh} />
               <button
                 onClick={onSignup}
-                className="buy__btn auth__btn"
+                className="buy__btn"
               >
                 {loading && (
                   <CgSpinner size={20} className="mt-1 animate-spin" />
                 )}
-                <span>Send code via SMS</span>
+                <span>Получить СМС</span>
               </button>
             </>
           )}
