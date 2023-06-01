@@ -19,20 +19,23 @@ const UserPage = () => {
             <h5 className="py-5 text-center fw-bold">Loading.....</h5>
           ) : (
             usersData?.map((item) => {
-              return (
-                <Form key={item.id === user.uid}>
-                  <FormGroup>
-                    <label>Name:</label>
-                    <p>
-                      {item.SurName} {item.FirstName}
-                    </p>
-                  </FormGroup>
-                  <FormGroup>
-                    <label>Email:</label>
-                    <p>{item.email}</p>
-                  </FormGroup>
-                </Form>
-              );
+              if (item.id === user.uid) {
+                return (
+                  <Form key={item.id}>
+                    <FormGroup>
+                      <label>Name:</label>
+                      <p>
+                        {item.SurName} {item.FirstName}
+                      </p>
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Email:</label>
+                      <p>{item.email}</p>
+                    </FormGroup>
+                  </Form>
+                );
+              }
+              return null;
             })
           )}
         </Col>
