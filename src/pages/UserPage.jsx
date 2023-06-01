@@ -23,7 +23,7 @@ const UserPage = () => {
                 return (
                   <Form key={item.id}>
                     <FormGroup>
-                      <label>Name:</label>
+                      <label>ФИО:</label>
                       <p>
                         {item.SurName} {item.FirstName}
                       </p>
@@ -31,6 +31,10 @@ const UserPage = () => {
                     <FormGroup>
                       <label>Email:</label>
                       <p>{item.email}</p>
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Телефон:</label>
+                      <p>{item.phoneNumber}</p> 
                     </FormGroup>
                   </Form>
                 );
