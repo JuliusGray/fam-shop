@@ -4,6 +4,14 @@
   line-height: 70px;
 }
 
+.text-color{
+  color: var(--primary-color);
+}
+
+/* .text-color:hover{
+  color: var(--primary-color)
+} */
+
 .nav__wrapper {
   display: flex;
   align-items: center;
@@ -149,7 +157,7 @@
 }
 
 .show__profileActions {
-  display: inline-block;
+  display: block;
 }
 
 .mobile__menu {

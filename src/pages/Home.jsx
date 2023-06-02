@@ -36,7 +36,7 @@ const Home = () => {
           <Row>
             <Col lg="6" md="6">
               <div className="hero__content">
-                <h2>Lorem ipsum dolor sit amet.</h2>
+                <h2>Семейный - ваш путь к вкусной и здоровой жизни!</h2>
                 <p>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
                   optio nisi fugiat praesentium deleniti quas vel id dolor
