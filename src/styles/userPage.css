@@ -32,6 +32,7 @@
     display: flex;
     color: #003c96;
     padding-left: 520px;
+    cursor: pointer;
 }
 
 .user-profile-field {
@@ -49,6 +50,7 @@
     font-size: 16px;
     color: #7b7b7b;
     letter-spacing: .2px;
+    text-indent: 5px;
 }
 
 .user-profile-field__label {
@@ -69,6 +71,7 @@
 [data-tooltip] {
     position: relative;
 }
+
 [data-tooltip]::after {
     content: attr(data-tooltip);
     width: 180px;
@@ -85,7 +88,22 @@
     transition: opacity .1s ease,visibility .1s ease-out;
     opacity: 0;
 } 
+
 [data-tooltip]:hover::after {
     opacity: 1;
     top: 1em; 
+}
+
+.custom-input {
+    width: 400px;
+    cursor: text;
+}
+
+.custom-div {
+    margin-bottom: 20px; /* Установите желаемый отступ вниз */
+}
+
+input{
+    height: 40px;
+    text-indent: 10px;
 }

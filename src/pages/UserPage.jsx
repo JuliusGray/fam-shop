@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Form, FormGroup } from "reactstrap";
 import { auth } from "../firebase.config";
 import useGetData from "../custom-hooks/useGetData";
@@ -7,6 +7,20 @@ import "../styles/userPage.css";
 const UserPage = () => {
   const user = auth.currentUser;
   const { data: usersData, loading } = useGetData("users");
+  const [edit, setEdit] = useState(false);
+  const [FirstName, setFirstName] = useState("");
+  const [SurName, setSurName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+
+  const editTrue = () => {
+    setEdit(true);
+  };
+
+  const editFalse = () => {
+    setEdit(false);
+  };
+
   return (
     <Container>
       <Row>
@@ -14,7 +28,7 @@ const UserPage = () => {
           <h1 class="article__title">Профиль</h1>
         </Col>
         <Col>
-          <a class="article__title-action" href="">
+          <a class="article__title-action" onClick={editTrue}>
             Редактировать
           </a>
         </Col>
@@ -25,7 +39,9 @@ const UserPage = () => {
       <Row>
         <Col>
           {loading ? (
-            <h5 className="py-5 text-center fw-bold">Loading.....</h5>
+            <Col lg="12" className="text-center">
+              <h5 className="fw-bold">Loading....</h5>
+            </Col>
           ) : (
             usersData?.map((item) => {
               if (item.id === user.uid) {
@@ -37,7 +53,28 @@ const UserPage = () => {
                         Полное имя:
                       </label>
                       <div className="user-profile-field__value">
-                        {item.SurName} {item.FirstName}
+                        {edit ? (
+                          <input
+                            type="text"
+                            placeholder="Введите Фамилию"
+                            value={SurName}
+                            onChange={(e) => setSurName(e.target.value)}
+                          />
+                        ) : (
+                          item.SurName
+                        )}
+                      </div>
+                      <div className="user-profile-field__value">
+                        {edit ? (
+                          <input
+                            type="text"
+                            placeholder="Введите Имя"
+                            value={FirstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                          />
+                        ) : (
+                          item.FirstName
+                        )}
                       </div>
                     </FormGroup>
                     <FormGroup className="user-profile-field user-profile-field--custom">
@@ -64,7 +101,9 @@ const UserPage = () => {
       <Row>
         <Col>
           {loading ? (
-            <h5 className="py-5 text-center fw-bold">Loading.....</h5>
+            <Col lg="12" className="text-center">
+              <h5 className="fw-bold">Loading....</h5>
+            </Col>
           ) : (
             usersData?.map((item) => {
               if (item.id === user.uid) {
@@ -77,8 +116,11 @@ const UserPage = () => {
                       <div className="user-profile-field__value">
                         {item.phoneNumber}
                       </div>
-                      <div className="data__tooltip" >
-                        <i className="ri-question-line" data-tooltip="Для смены номера телефона свяжитесь с тех. поддержкой"></i>
+                      <div className="data__tooltip">
+                        <i
+                          className="ri-question-line"
+                          data-tooltip="Для смены номера телефона свяжитесь с тех. поддержкой"
+                        ></i>
                       </div>
                     </FormGroup>
                     <FormGroup className="user-profile-field user-profile-field--custom">
@@ -86,14 +128,35 @@ const UserPage = () => {
                         Email:
                       </label>
                       <div className="user-profile-field__value">
-                        {item.email}
+                        {edit ? (
+                          <input
+                            type="email"
+                            placeholder="Введите Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                          />
+                        ) : (
+                          item.email
+                        )}
                       </div>
                     </FormGroup>
                     <FormGroup className="user-profile-field user-profile-field--custom">
                       <label className="user-profile-field__label">
                         Домашний адрес:
                       </label>
-                      <div className="user-profile-field__value">-</div>
+                      <div className="user-profile-field__value">
+                        {edit ? (
+                          <input
+                            type="text"
+                            placeholder="Город, улица, дом, квартира"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            className="custom-input"
+                          />
+                        ) : (
+                          item.email
+                        )}
+                      </div>
                     </FormGroup>
                   </Form>
                 );

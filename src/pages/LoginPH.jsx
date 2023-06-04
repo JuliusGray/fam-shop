@@ -54,7 +54,7 @@ const LoginPH = () => {
 
   function onSignup(e) {
     e.preventDefault();
-    // setLoading(true);
+    setLoading(true);
     onCaptchVerify();
 
     const appVerifier = recaptchaVerifier;
@@ -76,7 +76,7 @@ const LoginPH = () => {
   }
 
   function onOTPVerify() {
-    // setLoading(true);
+    setLoading(true);
     window.confirmationResult
       .confirm(otp)
       .then(async (res) => {
