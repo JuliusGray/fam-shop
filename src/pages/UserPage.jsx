@@ -14,7 +14,7 @@ const UserPage = () => {
           <h1 class="article__title">Профиль</h1>
         </Col>
         <Col>
-          <a class="article__title-action link" href="">
+          <a class="article__title-action" href="">
             Редактировать
           </a>
         </Col>

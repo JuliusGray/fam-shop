@@ -30,12 +30,8 @@
 .article__title-action {
     font-weight: 500;
     display: flex;
-    
-    padding-left: 520px;
-}
-
-.link, a {
     color: #003c96;
+    padding-left: 520px;
 }
 
 .user-profile-field {
