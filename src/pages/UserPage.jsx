@@ -11,6 +11,7 @@ const UserPage = () => {
   const [FirstName, setFirstName] = useState("");
   const [SurName, setSurName] = useState("");
   const [email, setEmail] = useState("");
+  const [selectedData, setSelectedData] = useState("");
   const [address, setAddress] = useState("");
 
   const editTrue = () => {
@@ -85,7 +86,17 @@ const UserPage = () => {
                       <label className="user-profile-field__label">
                         Дата рождения:
                       </label>
-                      <div className="user-profile-field__value">-</div>
+                      <div className="user-profile-field__value">
+                        {edit ? (
+                          <input
+                            type="date"
+                            value={selectedData}
+                            onChange={(e) => setSelectedData(e.target.value)}
+                          />
+                        ) : (
+                          item.FirstName
+                        )}
+                      </div>
                     </FormGroup>
                   </Form>
                 );

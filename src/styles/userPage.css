@@ -99,10 +99,6 @@
     cursor: text;
 }
 
-.custom-div {
-    margin-bottom: 20px; /* Установите желаемый отступ вниз */
-}
-
 input{
     height: 40px;
     text-indent: 10px;
