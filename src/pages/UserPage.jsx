@@ -4,6 +4,8 @@ import { auth } from "../firebase.config";
 import useGetData from "../custom-hooks/useGetData";
 import "../styles/userPage.css";
 import Helmet from "../components/Helmet/Helmet";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase.config";
 
 const UserPage = () => {
   const user = auth.currentUser;
@@ -14,6 +16,7 @@ const UserPage = () => {
   const [email, setEmail] = useState("");
   const [selectedData, setSelectedData] = useState("");
   const [address, setAddress] = useState("");
+  const [gender, setGender] = useState("");
 
   const editTrue = () => {
     setEdit(true);
@@ -21,6 +24,21 @@ const UserPage = () => {
 
   const editFalse = () => {
     setEdit(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await updateDoc(doc(db, "users", user.uid), {
+        FirstName: FirstName,
+        SurName: SurName,
+      });
+
+      console.log("Data updated successfully");
+    } catch (error) {
+      console.error("Error updating data: ", error);
+    }
   };
 
   return (
@@ -49,7 +67,7 @@ const UserPage = () => {
               usersData?.map((item) => {
                 if (item.id === user.uid) {
                   return (
-                    <Form key={item.id}>
+                    <Form key={item.id} onSubmit={handleSubmit}>
                       <FormGroup className="user-profile-field user-profile-field--custom">
                         <label className="user-profile-field__label">
                           {" "}
@@ -84,7 +102,34 @@ const UserPage = () => {
                         <label className="user-profile-field__label">
                           Пол:
                         </label>
-                        <div className="user-profile-field__value">-</div>
+                        <div className="user-profile-field__value">
+                          {edit ? (
+                            <>
+                              <label>
+                                <input
+                                  type="radio"
+                                  name="gender"
+                                  value="male"
+                                  checked={gender === "male"}
+                                  onChange={(e) => setGender(e.target.value)}
+                                />
+                                Мужской
+                              </label>
+                              <label>
+                                <input
+                                  type="radio"
+                                  name="gender"
+                                  value="female"
+                                  checked={gender === "female"}
+                                  onChange={(e) => setGender(e.target.value)}
+                                />
+                                Женский
+                              </label>
+                            </>
+                          ) : (
+                            item.sex
+                          )}
+                        </div>
                       </FormGroup>
                       <FormGroup className="user-profile-field user-profile-field--custom">
                         <label className="user-profile-field__label">
@@ -98,7 +143,7 @@ const UserPage = () => {
                               onChange={(e) => setSelectedData(e.target.value)}
                             />
                           ) : (
-                            item.FirstName
+                            item.birth
                           )}
                         </div>
                       </FormGroup>
@@ -169,7 +214,7 @@ const UserPage = () => {
                               className="custom-input"
                             />
                           ) : (
-                            item.email
+                            item.address
                           )}
                         </div>
                       </FormGroup>
@@ -178,6 +223,19 @@ const UserPage = () => {
                 }
                 return null;
               })
+            )}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            {edit && (
+              <div class="user-profile-section__save">
+                {" "}
+                <button className="btn__save" type="submit" onClick={editFalse}>
+                  {" "}
+                  Сохранить
+                </button>
+              </div>
             )}
           </Col>
         </Row>

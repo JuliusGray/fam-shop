@@ -39,6 +39,10 @@ const Signup = () => {
         FirstName: FirstName,
         SurName: SurName,
         email,
+        role: "User",
+        birth: "не указана",
+        sex: "не указан",
+        address: "не указан",
       });
 
       setLoading(false);

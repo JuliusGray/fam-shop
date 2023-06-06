@@ -113,7 +113,7 @@
 .btnLogin-popup:hover {
   background: #fff;
   color: var(--primary-color);
-  border: 1px solid var(--primary-color);;
+  border: 1px solid var(--primary-color);
 }
 
 .dropdown-menu {

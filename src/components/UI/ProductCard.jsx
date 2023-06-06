@@ -33,7 +33,6 @@ const ProductCard = ({ item }) => {
           <Link to={`/shop/${item.id}`}>
             <motion.img whileHover={{ scale: 0.9 }} src={item.imgUrl} alt="" />
           </Link>
-          {/* <motion.img whileHover={{ scale: 0.9 }} src={item.imgUrl} alt="" /> */}
         </div>
         <div className="p-2 product__info">
           <h3 className="product__name">

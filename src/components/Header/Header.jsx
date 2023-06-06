@@ -2,9 +2,8 @@ import React, { useRef, useEffect, useState } from "react";
 import "./header.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/eco-logo.png";
-import { Container, Row, Form } from "reactstrap";
+import { Container, Row, Col, Form } from "reactstrap";
 import { useSelector } from "react-redux";
-import useAuth from "../../custom-hooks/useAuth";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase.config";
 import { Link } from "react-router-dom";
@@ -27,16 +26,17 @@ const nav__link = [
 ];
 
 const Header = () => {
-  const { currentUser } = useAuth();
   const navigate = useNavigate();
-  // const [isOpen, setIsOpen] = useState(false);
   const user = auth.currentUser;
   const { data: usersData, loading } = useGetData("users");
-  // const profileActionsRef = useRef(null);
+  const [currentUser, setCurrentUser] = useState(false);
+  const [isDivVisible, setIsDivVisible] = useState(false); // Добавлено состояние для отслеживания видимости второго div
 
-  // const toggleDropdown = () => {
-  //   setIsOpen(!isOpen);
-  // };
+  useEffect(() => {
+    if (user) {
+      setCurrentUser(true);
+    }
+  }, [user]);
 
   const navigateToCart = () => {
     navigate("/cart");
@@ -77,79 +77,102 @@ const Header = () => {
   });
 
   const menuToggle = () => menuRef.current.classList.toggle("active__menu");
-  // const toggleProfileActions = () =>
-    // profileActionsRef.current.classList.toggle("show__profileActions");
+
+  const toggleDivVisibility = () => {
+    setIsDivVisible(!isDivVisible);
+  };
 
   return (
-    <header className="header" ref={headerRef}>
-      <Container>
-        <Row>
-          <div className="nav__wrapper">
-            <Link to={"/home"}>
-              <div className="logo">
-                <img src={logo} alt="logo" />
-                <div>
-                  <h1>Семейный</h1>
-                </div>
-              </div>
-            </Link>
-            <div className="navigation" ref={menuRef} onClick={menuToggle}>
-              <ul className="menu">
-                {nav__link.map((item, index) => (
-                  <li className="nav__item" key={index}>
-                    <NavLink
-                      to={item.path}
-                      className={(navClass) =>
-                        navClass.isActive ? "nav__active" : ""
-                      }
-                    >
-                      {item.display}
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="nav__icons">
-              <div className="btn">
-                {currentUser ? (
+    <>
+      <header className="header" ref={headerRef}>
+        <Container>
+          <Row>
+            <div className="nav__wrapper">
+              <Link to={"/home"}>
+                <div className="logo">
+                  <img src={logo} alt="logo" />
                   <div>
-                    {/* <button className="btnLogin-popup" onClick={toggleDropdown}> */}
-                    {loading ? (
-                      <h6>Loading.....</h6>
-                    ) : (
-                      usersData?.map((item) => {
+                    <h1>Семейный</h1>
+                  </div>
+                </div>
+              </Link>
+              <div className="navigation" ref={menuRef} onClick={menuToggle}>
+                <ul className="menu">
+                  {nav__link.map((item, index) => (
+                    <li className="nav__item" key={index}>
+                      <NavLink
+                        to={item.path}
+                        className={(navClass) =>
+                          navClass.isActive ? "nav__active" : ""
+                        }
+                      >
+                        {item.display}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="nav__icons">
+                <div className="btn">
+                  {usersData ? (
+                    currentUser ? (
+                      usersData.map((item) => {
                         if (item.id === user.uid) {
                           return (
                             <Form key={item.id}>
-                              <p className="text-color"><Link to="/profile">{item.FirstName}</Link></p>
+                              <p
+                                className="text-color"
+                                onClick={toggleDivVisibility}
+                              >
+                                {item.FirstName}
+                              </p>
+                              {isDivVisible && (
+                                <div className="profile">
+                                  <p>
+                                    <Link to="/profile">Профиль</Link>
+                                  </p>
+                                  <p>
+                                    <button
+                                      className="btnLogin-popup"
+                                      onClick={logout}
+                                    >
+                                      Выйти
+                                    </button>
+                                  </p>
+                                </div>
+                              )}
                             </Form>
                           );
                         }
                         return null;
                       })
-                    )}
-                    {/* </button> */}
-                  </div>
-                ) : (
-                  <button className="btnLogin-popup">
-                    <Link to="/login">Войти</Link>
-                  </button>
-                )}
-              </div>
-              <span className="cart__icon" onClick={navigateToCart}>
-                <i className="ri-shopping-bag-line"></i>
-                <span className="badge">{totalQuantity}</span>
-              </span>
-              <div className="mobile__menu">
-                <span onClick={menuToggle}>
-                  <i className="ri-menu-line"></i>
+                    ) : (
+                      <button className="btnLogin-popup">
+                        <Link to="/login">Войти</Link>
+                      </button>
+                    )
+                  ) : (
+                    <Col lg="12" className="text-center">
+                      <h5 className="fw-bold">Loading....</h5>
+                    </Col>
+                  )}
+                </div>
+                {/* {isDivVisible && <div className="profile">Second Div</div>} */}
+                <span className="cart__icon" onClick={navigateToCart}>
+                  <i className="ri-shopping-bag-line"></i>
+                  <span className="badge">{totalQuantity}</span>
                 </span>
+                <div className="mobile__menu">
+                  <span onClick={menuToggle}>
+                    <i className="ri-menu-line"></i>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        </Row>
-      </Container>
-    </header>
+          </Row>
+        </Container>
+      </header>
+    </>
   );
 };
 

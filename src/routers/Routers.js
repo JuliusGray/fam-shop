@@ -3,10 +3,10 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "../pages/Home";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
-import Login from "../pages/Login";
+// import Login from "../pages/Login";
 import ProductDetails from "../pages/ProductDetails";
 import Shop from "../pages/Shop";
-import Signup from "../pages/Signup";
+// import Signup from "../pages/Signup";
 import ProtectedRouters from "../routers/ProtectedRoutes";
 import AddProducts from "../admin/AddProducts";
 import AllProducts from "../admin/AllProducts";
@@ -27,13 +27,12 @@ const Routers = () => {
         <Route path="dashboard/all-products" element={<AllProducts />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="dashboard/users" element={<Users />} />
+        <Route path="profile" element={<UserPage />} />
       </Route>
-      <Route path="login" element={<Login />} />
+      <Route path="login" element={<LoginPH />} />
       <Route path="shop/:id" element={<ProductDetails />} />
       <Route path="shop" element={<Shop />} />
-      <Route path="signup" element={<Signup />} />
-      <Route path="ph-signup" element={<LoginPH />} />
-      <Route path="profile" element={<UserPage />} />
+      {/* <Route path="signup" element={<LoginPH />} /> */}
     </Routes>
   );
 };
