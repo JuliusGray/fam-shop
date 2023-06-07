@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import "../../styles/product-card.css";
 import { Col } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import { useDispatch } from "react-redux";

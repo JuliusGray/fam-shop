@@ -22,3 +22,7 @@
   color: #fff;
   cursor: pointer;
 }
+
+.phone__input{
+  height: 35px;
+}

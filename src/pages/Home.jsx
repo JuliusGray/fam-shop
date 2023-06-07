@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from "react";
-import Img from "../assets/images/grocery-cart.png";
-import Helmet from "../components/Helmet/Helmet";
-import "../styles/home.css";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import Services from "../services/Services";
+import { Container, Row, Col } from "reactstrap";
+import useGetData from "../custom-hooks/useGetData";
+
+import Img from "../assets/images/grocery-cart.png";
+import counterImg from "../assets/images/Мандарины-скидка.png";
+import Helmet from "../components/Helmet/Helmet";
 import ProductList from "../components/UI/ProductList";
 import Clock from "../components/UI/Clock";
-import counterImg from "../assets/images/Мандарины-скидка.png";
-import { Container, Row, Col } from "reactstrap";
-
-import useGetData from "../custom-hooks/useGetData";
+import Services from "../services/Services";
+import "../styles/home.css";
 
 const Home = () => {
   const { data: products, loading } = useGetData("products");
-  const [Trend, setTrend] = useState([]);
-  const [Best, setBest] = useState([]);
+  const [newProducts, setNewProducts] = useState([]);
+  const [bestProducts, setBestProducts] = useState([]);
 
   useEffect(() => {
-    const filterTrendProducts = products.filter(
+    const filterNewProducts = products.filter(
       (item) => item.dateUpload <= Date.now()
     );
-    setTrend(filterTrendProducts);
+    setNewProducts(filterNewProducts);
 
     const filterBestProducts = products.filter(
-      (item) => item.rating === "4.9" && "4.8"
+      (item) => item.rating === "4.9" || item.rating === "4.8"
     );
-    setBest(filterBestProducts);
+    setBestProducts(filterBestProducts);
   }, [products]);
 
   return (
@@ -56,7 +56,6 @@ const Home = () => {
           </Row>
         </Container>
       </section>
-
       <section className="trending__products">
         <Container>
           <Row>
@@ -66,12 +65,11 @@ const Home = () => {
             {loading ? (
               <h5 className="fw-bold">Loading....</h5>
             ) : (
-              <ProductList data={Trend} />
+              <ProductList data={newProducts} />
             )}
           </Row>
         </Container>
       </section>
-
       <section className="best__sales">
         <Container>
           <Row>
@@ -81,12 +79,11 @@ const Home = () => {
             {loading ? (
               <h5 className="fw-bold">Loading....</h5>
             ) : (
-              <ProductList data={Best} />
+              <ProductList data={bestProducts} />
             )}
           </Row>
         </Container>
       </section>
-
       <section className="timer__count">
         <Container>
           <Row>
@@ -111,7 +108,6 @@ const Home = () => {
           </Row>
         </Container>
       </section>
-
       <section className="new__arrivals">
         <Container>
           <Row>
@@ -122,7 +118,6 @@ const Home = () => {
           </Row>
         </Container>
       </section>
-
       <Services />
     </Helmet>
   );

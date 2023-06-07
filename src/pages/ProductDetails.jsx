@@ -1,11 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Container, Row, Col } from "reactstrap";
 import { useParams } from "react-router-dom";
-// import products from "../assets/data/products";
-import Helmet from "../components/Helmet/Helmet";
-import CommonSection from "../components/UI/CommonSection";
 import { motion } from "framer-motion";
-import ProductsList from "../components/UI/ProductList";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
@@ -13,9 +9,12 @@ import { toast } from "react-toastify";
 import { db } from "../firebase.config";
 import { doc, getDoc } from "firebase/firestore";
 
-import "../styles/product-details.css";
-
+import Helmet from "../components/Helmet/Helmet";
+import CommonSection from "../components/UI/CommonSection";
+import ProductsList from "../components/UI/ProductList";
 import useGetData from "../custom-hooks/useGetData";
+
+import "../styles/product-details.css";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState({});

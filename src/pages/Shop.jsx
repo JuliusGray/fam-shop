@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
+import { Container, Row, Col } from "reactstrap";
 
 import CommonSection from "../components/UI/CommonSection";
 import Helmet from "../components/Helmet/Helmet";
-import { Container, Row, Col } from "reactstrap";
-
-import "../styles/shop.css";
-
-import products from "../assets/data/products";
 import ProductList from "../components/UI/ProductList";
 import useGetData from "../custom-hooks/useGetData";
+
+import "../styles/shop.css";
 
 const Shop = () => {
   // const [productsData, setProductsData] = useState(products);
@@ -105,7 +103,9 @@ const Shop = () => {
       <section className="pt-0">
         <Container>
           <Row>
-            {products.length === 0 ? (
+            {loading ? (
+              <h1 className="text-center fs-4">Загрузка...</h1>
+            ) : products.length === 0 ? (
               <h1 className="text-center fs-4">Продукты не найдены!</h1>
             ) : (
               <ProductList data={products} />

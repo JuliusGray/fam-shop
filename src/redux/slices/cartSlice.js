@@ -40,10 +40,12 @@ const cartSlice = createSlice({
         ).toFixed(2);
       }
 
-      state.totalAmount = state.cartItems.reduce(
-        (total, item) => total + Number(item.price) * Number(item.quantity),
-        0
-      ).toFixed(2);
+      state.totalAmount = state.cartItems
+        .reduce(
+          (total, item) => total + Number(item.price) * Number(item.quantity),
+          0
+        )
+        .toFixed(2);
     },
     deleteItem: (state, action) => {
       const id = action.payload;
@@ -56,10 +58,12 @@ const cartSlice = createSlice({
         state.totalQuantity -= existingItem.quantity;
       }
 
-      state.totalAmount = state.cartItems.reduce(
-        (total, item) => total + Number(item.price) * Number(item.quantity),
-        0
-      ).toFixed(2);
+      state.totalAmount = state.cartItems
+        .reduce(
+          (total, item) => total + Number(item.price) * Number(item.quantity),
+          0
+        )
+        .toFixed(2);
     },
     delItem: (state, action) => {
       const id = action.payload;
@@ -75,15 +79,25 @@ const cartSlice = createSlice({
         }
       }
 
-      state.totalAmount = state.cartItems.reduce(
-        (total, item) => total + Number(item.price) * Number(item.quantity),
-        0
-      ).toFixed(2);
+      state.totalAmount = state.cartItems
+        .reduce(
+          (total, item) => total + Number(item.price) * Number(item.quantity),
+          0
+        )
+        .toFixed(2);
+    },
+    clearCart: (state) => {
+      state.cartItems = [];
+      state.totalAmount = 0;
+      state.totalQuantity = 0;
     },
   },
 });
 
-const persistedCartReducer = persistReducer(cartPersistConfig, cartSlice.reducer);
+const persistedCartReducer = persistReducer(
+  cartPersistConfig,
+  cartSlice.reducer
+);
 
 export const cartActions = cartSlice.actions;
 export default persistedCartReducer;
