@@ -9,10 +9,11 @@ import { auth } from "../firebase.config";
 import Helmet from "../components/Helmet/Helmet";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
+// import { auth } from "../firebase.config";
 
 const CACHE_KEY_OTP = "cached_otp";
 const CACHE_KEY_PH = "cached_ph";
@@ -22,6 +23,10 @@ const LoginPH = () => {
   const [ph, setPh] = useState(localStorage.getItem(CACHE_KEY_PH) || "");
   const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const navigate = useNavigate();
 
   let recaptchaVerifier = null;
@@ -73,32 +78,71 @@ const LoginPH = () => {
       });
   }
 
-  function onOTPVerify() {
+  async function onOTPVerify() {
     setLoading(true);
     window.confirmationResult
       .confirm(otp)
       .then(async (res) => {
-        console.log(res);
-        const { uid, phoneNumber } = res.user;
+        const { uid } = res.user;
 
-        await setDoc(doc(db, "users", uid), {
-          uid: uid,
-          phoneNumber: phoneNumber,
-          FirstName: "-",
-          SurName: "-",
-          email: "-",
-          role: "User",
-          birth: "-",
-          sex: "-",
-          address: "-",
-        });
-        setLoading(false);
-        navigate("/profile");
+        const userDoc = doc(db, "users", uid);
+        const userSnapshot = await getDoc(userDoc);
+
+        if (userSnapshot.exists()) {
+          // Пользователь уже зарегистрирован, выполняем вход в систему без изменений в базе данных
+          setLoading(false);
+          navigate("/profile");
+        } else {
+          // Новый пользователь, открываем окно для ввода дополнительных данных
+          setLoading(false);
+          setShowOTP(false); // Скрываем окно с OTP-кодом
+          setShowForm(true); // Отображаем форму для ввода дополнительных данных
+        }
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
       });
+  }
+
+  async function onFormSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+
+    const confirmationResult = window.confirmationResult;
+    const credential = await confirmationResult.confirm(otp);
+    const user = credential.user;
+    const { uid, phoneNumber } = user;
+
+    const userDocRef = doc(db, "users", uid);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (userDocSnap.exists()) {
+      if (userDocSnap.data().disabled) {
+        setLoading(false);
+        toast.error("Ваша учетная запись отключена.");
+        return;
+      }
+    }
+
+    // Получаем значения полей формы
+    const firstNameValue = firstName.trim();
+    const lastNameValue = lastName.trim();
+    const birthDateValue = birthDate.trim();
+
+    // Выполняем регистрацию пользователя в базе данных
+    await setDoc(userDocRef, {
+      uid: uid,
+      phoneNumber: phoneNumber,
+      firstName: firstNameValue,
+      lastName: lastNameValue,
+      birthDate: birthDateValue,
+      role: "User",
+      address: "-",
+    });
+
+    setLoading(false);
+    navigate("/profile");
   }
 
   return (
@@ -122,7 +166,7 @@ const LoginPH = () => {
                       htmlFor="otp"
                       className="font-bold text-xl text-black"
                     >
-                      Enter your OTP
+                      Введите код подтверждения
                     </label>
                     <Col className="mx-auto text-center">
                       <OtpInput
@@ -142,6 +186,62 @@ const LoginPH = () => {
                       <span>Отправить код</span>
                     </button>
                   </>
+                ) : showForm ? (
+                  <>
+                    <div className="bg-white text-emerald-500 w-fit mx-auto p-4 rounded-full">
+                      <BsTelephoneFill size={30} />
+                    </div>
+                    <form
+                      onSubmit={onFormSubmit}
+                      className="flex flex-col gap-4"
+                    >
+                      <label
+                        htmlFor="firstName"
+                        className="font-bold text-xl text-black"
+                      >
+                        Имя
+                      </label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        className="input-field"
+                      />
+                      <label
+                        htmlFor="lastName"
+                        className="font-bold text-xl text-black"
+                      >
+                        Фамилия
+                      </label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        className="input-field"
+                      />
+                      <label
+                        htmlFor="birthDate"
+                        className="font-bold text-xl text-black"
+                      >
+                        Дата рождения
+                      </label>
+                      <input
+                        type="text"
+                        id="birthDate"
+                        value={birthDate}
+                        onChange={(e) => setBirthDate(e.target.value)}
+                        className="input-field"
+                      />
+                      <button type="submit" className="buy__btn">
+                        {loading && (
+                          <CgSpinner size={20} className="mt-1 animate-spin" />
+                        )}
+                        <span>Зарегистрироваться</span>
+                      </button>
+                    </form>
+                  </>
                 ) : (
                   <>
                     <div className="bg-white text-emerald-500 w-fit mx-auto p-4 rounded-full">
@@ -151,10 +251,15 @@ const LoginPH = () => {
                       htmlFor=""
                       className="font-bold text-xl text-black text-center"
                     >
-                      Verify your phone number
+                      Подтвердите ваш номер телефона
                     </label>
                     <Col className="d-flex my-3">
-                      <PhoneInput country={"ru"} value={ph} onChange={setPh} inputClass="phone__input" />
+                      <PhoneInput
+                        country={"ru"}
+                        value={ph}
+                        onChange={setPh}
+                        inputClass="phone__input"
+                      />
                     </Col>
                     <button onClick={onSignup} className="buy__btn">
                       {loading && (

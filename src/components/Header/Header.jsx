@@ -126,21 +126,16 @@ const Header = () => {
                               >
                                 {item.FirstName}
                               </p>
-                              {isDivVisible && (
-                                <div className="profile">
-                                  <p>
-                                    <Link to="/profile">Профиль</Link>
-                                  </p>
-                                  <p>
-                                    <button
-                                      className="btnLogin-popup"
-                                      onClick={logout}
-                                    >
-                                      Выйти
-                                    </button>
-                                  </p>
-                                </div>
-                              )}
+                              <div className="profile__actions">
+                                <Link to="/profile">Профиль</Link>
+                                <br />
+                                <span
+                                  // className="btnLogin-popup"
+                                  onClick={logout}
+                                >
+                                  Выйти
+                                </span>
+                              </div>
                             </Form>
                           );
                         }
@@ -156,8 +151,7 @@ const Header = () => {
                       <h5 className="fw-bold">Loading....</h5>
                     </Col>
                   )}
-                </div>
-                {/* {isDivVisible && <div className="profile">Second Div</div>} */}
+                </div>{" "}
                 <span className="cart__icon" onClick={navigateToCart}>
                   <i className="ri-shopping-bag-line"></i>
                   <span className="badge">{totalQuantity}</span>
