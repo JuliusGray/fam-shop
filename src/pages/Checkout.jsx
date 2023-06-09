@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 const Checkout = () => {
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const totalQty = useSelector((state) => state.cart.totalQuantity);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const { data: usersData, loading } = useGetData("users");
@@ -63,6 +64,14 @@ const Checkout = () => {
     }
   }, [user]);
 
+  const orderItems = cartItems.map((item) => ({
+    id: item.id,
+    productName: item.productName,
+    price: item.price,
+    imgUrl: item.imgUrl,
+    qty: item.quantity,
+  }));
+
   const setOrder = async (e) => {
     e.preventDefault();
     try {
@@ -75,6 +84,7 @@ const Checkout = () => {
         price: totalAmount,
         date: `${Date.now()}`,
         status: "В обработке",
+        orderItems: orderItems,
       });
       toast.success("Заказ успешно оформлен!");
       console.log("Order added successfully!");

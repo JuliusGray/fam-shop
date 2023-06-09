@@ -1,41 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, FormGroup } from "reactstrap";
-import { auth } from "../firebase.config";
+import { auth, db } from "../firebase.config";
 import useGetData from "../custom-hooks/useGetData";
 import "../styles/userPage.css";
 import Helmet from "../components/Helmet/Helmet";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase.config";
 
 const UserPage = () => {
-  const user = auth.currentUser;
+  // const user = auth.currentUser;
+  const [user, setUser] = useState(null);
   const { data: usersData, loading } = useGetData("users");
   const [edit, setEdit] = useState(false);
-  const [FirstName, setFirstName] = useState("");
-  const [SurName, setSurName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [surName, setSurName] = useState("");
   const [email, setEmail] = useState("");
-  const [selectedData, setSelectedData] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
   const [address, setAddress] = useState("");
   const [gender, setGender] = useState("");
 
-  const editTrue = () => {
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!loading && usersData.length > 0 && user) {
+      const currentUserData = usersData.find((item) => item.id === user.uid);
+      if (currentUserData) {
+        setFirstName(currentUserData.FirstName);
+        setSurName(currentUserData.SurName);
+        setEmail(currentUserData.email);
+        setSelectedDate(currentUserData.birth);
+        setAddress(currentUserData.address);
+        setGender(currentUserData.gender);
+      }
+    }
+  }, [loading, usersData, user]);
+
+  const handleEdit = () => {
     setEdit(true);
   };
 
-  const editFalse = () => {
-    setEdit(false);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
 
     try {
       await updateDoc(doc(db, "users", user.uid), {
-        FirstName: FirstName,
-        SurName: SurName,
+        FirstName: firstName,
+        SurName: surName,
+        email: email,
+        birth: selectedDate,
+        address: address,
+        gender: gender,
       });
 
       console.log("Data updated successfully");
+      setEdit(false);
     } catch (error) {
       console.error("Error updating data: ", error);
     }
@@ -46,16 +71,18 @@ const UserPage = () => {
       <Container>
         <Row>
           <Col>
-            <h1 class="article__title">Профиль</h1>
+            <h1 className="article__title">Профиль</h1>
           </Col>
           <Col>
-            <a class="article__title-action" onClick={editTrue}>
-              Редактировать
-            </a>
+            {!edit && (
+              <a className="article__title-action" onClick={handleEdit}>
+                Редактировать
+              </a>
+            )}
           </Col>
         </Row>
         <Row>
-          <h2 class="user-profile-section__header">Общая информация</h2>
+          <h2 className="user-profile-section__header">Общая информация</h2>
         </Row>
         <Row>
           <Col>
@@ -67,10 +94,9 @@ const UserPage = () => {
               usersData?.map((item) => {
                 if (item.id === user.uid) {
                   return (
-                    <Form key={item.id} onSubmit={handleSubmit}>
+                    <Form key={item.id} onSubmit={handleSave}>
                       <FormGroup className="user-profile-field user-profile-field--custom">
                         <label className="user-profile-field__label">
-                          {" "}
                           Полное имя:
                         </label>
                         <div className="user-profile-field__value">
@@ -78,7 +104,7 @@ const UserPage = () => {
                             <input
                               type="text"
                               placeholder="Введите Фамилию"
-                              value={SurName}
+                              value={surName}
                               onChange={(e) => setSurName(e.target.value)}
                             />
                           ) : (
@@ -90,7 +116,7 @@ const UserPage = () => {
                             <input
                               type="text"
                               placeholder="Введите Имя"
-                              value={FirstName}
+                              value={firstName}
                               onChange={(e) => setFirstName(e.target.value)}
                             />
                           ) : (
@@ -109,8 +135,8 @@ const UserPage = () => {
                                 <input
                                   type="radio"
                                   name="gender"
-                                  value="male"
-                                  checked={gender === "male"}
+                                  value="Мужской"
+                                  checked={gender === "Мужской"}
                                   onChange={(e) => setGender(e.target.value)}
                                 />
                                 Мужской
@@ -119,15 +145,15 @@ const UserPage = () => {
                                 <input
                                   type="radio"
                                   name="gender"
-                                  value="female"
-                                  checked={gender === "female"}
+                                  value="Женский"
+                                  checked={gender === "Женский"}
                                   onChange={(e) => setGender(e.target.value)}
                                 />
                                 Женский
                               </label>
                             </>
                           ) : (
-                            item.sex
+                            item.gender
                           )}
                         </div>
                       </FormGroup>
@@ -139,14 +165,25 @@ const UserPage = () => {
                           {edit ? (
                             <input
                               type="date"
-                              value={selectedData}
-                              onChange={(e) => setSelectedData(e.target.value)}
+                              value={selectedDate}
+                              onChange={(e) => setSelectedDate(e.target.value)}
                             />
                           ) : (
                             item.birth
                           )}
                         </div>
                       </FormGroup>
+                      {edit && (
+                        <div className="user-profile-section__save">
+                          <button
+                            className="btn__save"
+                            type="submit"
+                            onClick={handleSave}
+                          >
+                            Сохранить
+                          </button>
+                        </div>
+                      )}
                     </Form>
                   );
                 }
@@ -156,7 +193,9 @@ const UserPage = () => {
           </Col>
         </Row>
         <Row>
-          <h2 class="user-profile-section__header">Контактная информация</h2>
+          <h2 className="user-profile-section__header">
+            Контактная информация
+          </h2>
         </Row>
         <Row>
           <Col>
@@ -223,19 +262,6 @@ const UserPage = () => {
                 }
                 return null;
               })
-            )}
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            {edit && (
-              <div class="user-profile-section__save">
-                {" "}
-                <button className="btn__save" type="submit" onClick={editFalse}>
-                  {" "}
-                  Сохранить
-                </button>
-              </div>
             )}
           </Col>
         </Row>

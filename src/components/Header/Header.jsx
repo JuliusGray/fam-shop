@@ -60,6 +60,11 @@ const Header = () => {
   };
 
   const logout = () => {
+    if (!user) {
+      console.log("User is not authenticated");
+      return;
+    }
+  
     signOut(auth)
       .then(() => {
         toast.success("Вы вышли из аккаунта");
@@ -128,6 +133,8 @@ const Header = () => {
                               </p>
                               <div className="profile__actions">
                                 <Link to="/profile">Профиль</Link>
+                                <br />
+                                <Link to="/my-orders">Мои заказы</Link>
                                 <br />
                                 <span
                                   // className="btnLogin-popup"

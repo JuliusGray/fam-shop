@@ -2,7 +2,7 @@ import { BsFillShieldLockFill, BsTelephoneFill } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 
 import OtpInput from "otp-input-react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { auth } from "../firebase.config";
@@ -13,14 +13,14 @@ import { setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
-// import { auth } from "../firebase.config";
 
-const CACHE_KEY_OTP = "cached_otp";
 const CACHE_KEY_PH = "cached_ph";
 
-const LoginPH = () => {
-  const [otp, setOtp] = useState(localStorage.getItem(CACHE_KEY_OTP) || "");
-  const [ph, setPh] = useState(localStorage.getItem(CACHE_KEY_PH) || "");
+const LoginPH = (callback) => {
+  const memoizedCallback = useMemo(() => callback, []);
+
+  const [otp, setOtp] = useState("");
+  const [ph, setPh] = useState("");
   const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -29,38 +29,43 @@ const LoginPH = () => {
   const [birthDate, setBirthDate] = useState("");
   const navigate = useNavigate();
 
-  let recaptchaVerifier = null;
-
-  useEffect(() => {
-    localStorage.setItem(CACHE_KEY_OTP, otp);
-  }, [otp]);
+  const recaptchaContainerRef = useRef(null);
+  const recaptchaVerifierRef = useRef(null);
 
   useEffect(() => {
     localStorage.setItem(CACHE_KEY_PH, ph);
   }, [ph]);
 
-  function onCaptchVerify() {
-    if (!recaptchaVerifier) {
-      recaptchaVerifier = new RecaptchaVerifier(
-        "recaptcha-container",
-        {
-          size: "invisible",
-          callback: (response) => {
-            onSignup();
-          },
-          "expired-callback": () => {},
+  useEffect(() => {
+    recaptchaVerifierRef.current = new RecaptchaVerifier(
+      recaptchaContainerRef.current,
+      {
+        size: "invisible",
+        callback: (response) => {
+          onSignup();
         },
-        auth
-      );
+        "expired-callback": () => {},
+      },
+      auth
+    );
+  }, []);
+
+  function onCaptchaVerify() {
+    console.log("onCaptchaVerify called");
+    if (recaptchaVerifierRef.current) {
+      recaptchaVerifierRef.current.render();
     }
   }
 
-  function onSignup(e) {
-    e.preventDefault();
+  async function onSignup() {
+    if (loading) {
+      return; // Предотвращаем повторный вызов, если уже идет загрузка
+    }
     setLoading(true);
-    onCaptchVerify();
+    onCaptchaVerify();
+    console.log("onSignup called");
 
-    const appVerifier = recaptchaVerifier;
+    const appVerifier = recaptchaVerifierRef.current;
 
     const formatPh = "+" + ph;
 
@@ -74,29 +79,40 @@ const LoginPH = () => {
       .catch((error) => {
         console.log(error);
         setLoading(false);
-        toast.error("Повторите попытку позже!");
+        if (error && error.code) {
+          if (error.code === "auth/too-many-requests") {
+            toast.error(
+              "Слишком много запросов. Пожалуйста, повторите попытку позже."
+            );
+          }
+          if (error.code === "auth/quota-exceeded") {
+            toast.error(
+              "Превышен лимит авторизаций в час. Пожалуйста, повторите попытку позже."
+            );
+          }
+        } else {
+          toast.error("Произошла ошибка. Пожалуйста, повторите попытку позже.");
+        }
       });
   }
 
   async function onOTPVerify() {
+    console.log("onOTPVerify called");
     setLoading(true);
     window.confirmationResult
       .confirm(otp)
       .then(async (res) => {
         const { uid } = res.user;
-
         const userDoc = doc(db, "users", uid);
         const userSnapshot = await getDoc(userDoc);
 
         if (userSnapshot.exists()) {
-          // Пользователь уже зарегистрирован, выполняем вход в систему без изменений в базе данных
           setLoading(false);
           navigate("/profile");
         } else {
-          // Новый пользователь, открываем окно для ввода дополнительных данных
           setLoading(false);
-          setShowOTP(false); // Скрываем окно с OTP-кодом
-          setShowForm(true); // Отображаем форму для ввода дополнительных данных
+          setShowOTP(false);
+          setShowForm(true);
         }
       })
       .catch((err) => {
@@ -106,12 +122,17 @@ const LoginPH = () => {
   }
 
   async function onFormSubmit(e) {
+    console.log("onFormSubmit called");
     e.preventDefault();
     setLoading(true);
 
-    const confirmationResult = window.confirmationResult;
-    const credential = await confirmationResult.confirm(otp);
-    const user = credential.user;
+    if (!firstName || !lastName || !birthDate) {
+      setLoading(false);
+      toast.error("Пожалуйста, заполните все поля.");
+      return;
+    }
+
+    const user = auth.currentUser;
     const { uid, phoneNumber } = user;
 
     const userDocRef = doc(db, "users", uid);
@@ -124,21 +145,16 @@ const LoginPH = () => {
         return;
       }
     }
-
-    // Получаем значения полей формы
-    const firstNameValue = firstName.trim();
-    const lastNameValue = lastName.trim();
-    const birthDateValue = birthDate.trim();
-
-    // Выполняем регистрацию пользователя в базе данных
     await setDoc(userDocRef, {
       uid: uid,
       phoneNumber: phoneNumber,
-      firstName: firstNameValue,
-      lastName: lastNameValue,
-      birthDate: birthDateValue,
+      FirstName: firstName,
+      SurName: lastName,
+      birth: birthDate,
       role: "User",
       address: "-",
+      gender: "-",
+      email: "-",
     });
 
     setLoading(false);
@@ -152,7 +168,7 @@ const LoginPH = () => {
           <Row className="justify-content-center align-items-center">
             <Col lg="12" className="d-flex justify-content-center text-center">
               <Toaster toastOptions={{ duration: 4000 }} />
-              <div id="recaptcha-container"></div>
+              <div ref={recaptchaContainerRef} id="recaptcha-container"></div>
               <div className="w-80 flex flex-col gap-4 rounded-lg p-4 my-4">
                 <h1 className="text-center leading-normal text-black font-medium text-3xl mb-6">
                   Авторизация
@@ -228,7 +244,7 @@ const LoginPH = () => {
                         Дата рождения
                       </label>
                       <input
-                        type="text"
+                        type="date"
                         id="birthDate"
                         value={birthDate}
                         onChange={(e) => setBirthDate(e.target.value)}

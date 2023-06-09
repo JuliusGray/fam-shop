@@ -14,6 +14,8 @@ import Dashboard from "../admin/Dashboard";
 import Users from "../admin/Users";
 import LoginPH from "../pages/LoginPH";
 import UserPage from "../pages/UserPage";
+import AllOrders from "../admin/AllOrders";
+import MyOrders from "../pages/MyOrders";
 
 const Routers = () => {
   return (
@@ -25,14 +27,15 @@ const Routers = () => {
         <Route path="checkout" element={<Checkout />} />
         <Route path="dashboard/add-product" element={<AddProducts />} />
         <Route path="dashboard/all-products" element={<AllProducts />} />
+        <Route path="dashboard/all-orders" element={<AllOrders />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="dashboard/users" element={<Users />} />
         <Route path="profile" element={<UserPage />} />
+        <Route path="my-orders" element={<MyOrders />} />
       </Route>
       <Route path="login" element={<LoginPH />} />
       <Route path="shop/:id" element={<ProductDetails />} />
       <Route path="shop" element={<Shop />} />
-      {/* <Route path="signup" element={<LoginPH />} /> */}
     </Routes>
   );
 };
