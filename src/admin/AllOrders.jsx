@@ -72,6 +72,7 @@ const AllOrders = () => {
                   </tr>
                 ) : (
                   ordersData
+                    .sort((a, b) => a.date - b.date)
                     .filter((item) => item.status === "В обработке")
                     .map((item) => (
                       <>

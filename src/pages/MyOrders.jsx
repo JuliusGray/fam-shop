@@ -83,6 +83,7 @@ const MyOrders = () => {
                   </tr>
                 ) : (
                   ordersData
+                    .sort((a, b) => a.date - b.date)
                     .filter((item) => item.user_uid === user.uid)
                     .map((item) => (
                       <>
