@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "reactstrap";
 import { db } from "../firebase.config";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import useGetData from "../custom-hooks/useGetData";
 import { toast } from "react-toastify";
 
@@ -11,8 +11,9 @@ const AllOrders = () => {
   const [showProducts, setShowProducts] = useState(false);
 
   const deleteProd = async (id) => {
-    await deleteDoc(doc(db, "orders", id));
-    toast.success("Заказ удален!");
+    const orderRef = doc(db, "orders", id);
+    await updateDoc(orderRef, { status: "Отменен" });
+    toast.success("Заказ отменен!");
   };
 
   const showProductTable = (order) => {
