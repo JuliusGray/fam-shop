@@ -1,50 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col } from "reactstrap";
-
 import CommonSection from "../components/UI/CommonSection";
 import Helmet from "../components/Helmet/Helmet";
 import ProductList from "../components/UI/ProductList";
 import useGetData from "../custom-hooks/useGetData";
-
 import "../styles/shop.css";
 
 const Shop = () => {
-  // const [productsData, setProductsData] = useState(products);
+  const [searchTerm, setSearchTerm] = useState("");
   const { data: products, loading } = useGetData("products");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-  // const handleFilter = (e) => {
-  //   const filterValue = e.target.value;
-  //   if (filterValue === "Хлеб и выпечка") {
-  //     const filteredProducts = products.filter(
-  //       (item) => item.category === "Хлеб и выпечка"
-  //     );
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+    setSelectedCategory("");
+  };
 
-  //     setProductsData(filteredProducts);
-  //   }
-  //   if (filterValue === "Фрукты и овощи") {
-  //     const filteredProducts = products.filter(
-  //       (item) => item.category === "Фрукты и овощи"
-  //     );
+  const handleCategoryFilter = (e) => {
+    const selectedCategory = e.target.value;
+    setSelectedCategory(selectedCategory);
+  };
 
-  //     setProductsData(filteredProducts);
-  //   }
-  //   if (filterValue === "Молоко, сыр, яйцо") {
-  //     const filteredProducts = products.filter(
-  //       (item) => item.category === "Молоко, сыр, яйцо"
-  //     );
+  const getFilteredProducts = () => {
+    let filteredProducts = products;
 
-  //     setProductsData(filteredProducts);
-  //   }
-  // };
+    if (selectedCategory) {
+      filteredProducts = filteredProducts.filter(
+        (item) => item.category === selectedCategory
+      );
+    }
 
-  // const handleSearch = (e) => {
-  //   const searchTerm = e.target.value;
+    if (searchTerm) {
+      filteredProducts = filteredProducts.filter((item) =>
+        item.productName.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
 
-  //   const searchedProducts = products.filter((item) =>
-  //     item.productName.toLowerCase().includes(searchTerm.toLowerCase())
-  //   );
-  //   setProductsData(searchedProducts);
-  // };
+    return filteredProducts;
+  };
 
   return (
     <Helmet title="Магазин">
@@ -54,8 +48,11 @@ const Shop = () => {
           <Row>
             <Col lg="3" md="6">
               <div className="filter__widget">
-                <select>
-                  <option>Категории</option>
+                <select
+                  value={selectedCategory}
+                  onChange={handleCategoryFilter}
+                >
+                  <option value="">Категории</option>
                   <option value="Хлеб и выпечка">Хлеб и выпечка</option>
                   <option value="Фрукты и овощи">Фрукты и овощи</option>
                   <option value="Мясо, птица, колбаса">
@@ -90,10 +87,10 @@ const Shop = () => {
                 <input
                   type="text"
                   placeholder="Поиск...."
-                  // onChange={handleSearch}
+                  onChange={handleSearch}
                 />
                 <span>
-                  <i class="ri-search-line"></i>
+                  <i className="ri-search-line"></i>
                 </span>
               </div>
             </Col>
@@ -108,7 +105,7 @@ const Shop = () => {
             ) : products.length === 0 ? (
               <h1 className="text-center fs-4">Продукты не найдены!</h1>
             ) : (
-              <ProductList data={products} />
+              <ProductList data={getFilteredProducts()} />
             )}
           </Row>
         </Container>
