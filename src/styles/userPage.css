@@ -131,4 +131,6 @@ input{
     padding: 18px;
     border-radius: 2px;
     background: #f5f5f5;
+    display: flex;
+    justify-content: space-between;
 }

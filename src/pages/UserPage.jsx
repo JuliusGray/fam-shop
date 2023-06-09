@@ -46,6 +46,10 @@ const UserPage = () => {
     setEdit(true);
   };
 
+  const handleEditFalse = () => {
+    setEdit(false);
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
 
@@ -173,17 +177,6 @@ const UserPage = () => {
                           )}
                         </div>
                       </FormGroup>
-                      {edit && (
-                        <div className="user-profile-section__save">
-                          <button
-                            className="btn__save"
-                            type="submit"
-                            onClick={handleSave}
-                          >
-                            Сохранить
-                          </button>
-                        </div>
-                      )}
                     </Form>
                   );
                 }
@@ -264,6 +257,18 @@ const UserPage = () => {
               })
             )}
           </Col>
+        </Row>
+        <Row>
+          {edit && (
+            <div className="user-profile-section__save">
+              <button className="buy__btn" type="submit" onClick={handleSave}>
+                Сохранить
+              </button>
+              <button className="buy__btn" type="submit" onClick={handleEditFalse}>
+                Отменить
+              </button>
+            </div>
+          )}
         </Row>
       </Container>
     </Helmet>
