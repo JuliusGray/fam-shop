@@ -5,7 +5,7 @@ import { Container, Row, Col } from "reactstrap";
 import useGetData from "../custom-hooks/useGetData";
 
 import Img from "../assets/images/grocery-cart.png";
-import counterImg from "../assets/images/Мандарины-скидка.png";
+import counterImg from "../assets/images/apple.png";
 import Helmet from "../components/Helmet/Helmet";
 import ProductList from "../components/UI/ProductList";
 import Clock from "../components/UI/Clock";
@@ -106,14 +106,16 @@ const Home = () => {
                 <h4 className="text-white fs-6 mb-2">
                   Ограниченное предложение
                 </h4>
-                <h3 className="text-white fs-5 mb-3">Мандарины</h3>
+                <h3 className="text-white fs-5 mb-3">
+                  Яблоки Гренни Смит, весовые
+                </h3>
               </div>
               <Clock />
               <motion.button
                 whileTap={{ scale: 1.2 }}
                 className="buy__btn store__btn"
               >
-                <Link to="/shop">Перейти в магазин</Link>
+                <Link to="/shop/EBW7EGbOevsAR1vGIh10">Перейти к товару</Link>
               </motion.button>
             </Col>
             <Col lg="6" md="12" className="text-end counter__img">

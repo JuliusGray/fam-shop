@@ -93,6 +93,14 @@
   border-radius: 50%;
 }
 
+.counter__img {
+  width: 350px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
 @media only screen and (max-width: 992px) {
   .hero__content h2 {
     font-size: 2rem;
