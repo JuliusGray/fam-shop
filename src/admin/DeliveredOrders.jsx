@@ -6,7 +6,7 @@ import useGetData from "../custom-hooks/useGetData";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
-const AllOrders = () => {
+const DeliveredOrders = () => {
   const { data: ordersData, loading } = useGetData("orders");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showProducts, setShowProducts] = useState(false);
@@ -65,14 +65,16 @@ const AllOrders = () => {
       <Container>
         <Row>
           <Col>
-            <h1 className="article__title">Все заказы</h1>
+            <h1 className="article__title">Доставленные заказы</h1>
           </Col>
           <Col>
             <div className="article__title-action">
-              <Link to="/dashboard/delivered-orders">
-                <button className="btn btn-success mx-1">Доставленные</button>
+              <Link to="/dashboard/all-orders">
+                <button className="btn btn-success mx-1">Все</button>
               </Link>
-              <button className="btn btn-danger mx-1">Отмененные</button>
+              <Link to="/dashboard/cancel-orders">
+                <button className="btn btn-danger mx-1">Отмененные</button>
+              </Link>
             </div>
           </Col>
         </Row>
@@ -100,17 +102,13 @@ const AllOrders = () => {
                 ) : (
                   ordersData
                     .sort((a, b) => a.date - b.date)
-                    .filter(
-                      (item) =>
-                        item.status === "В обработке" ||
-                        item.status === "В пути"
-                    )
+                    .filter((item) => item.status === "Доставлен")
                     .map((item) => (
                       <>
                         <tr key={item.id}>
                           {/* <td>
-                            <img src={item.imgUrl} />
-                          </td> */}
+                              <img src={item.imgUrl} />
+                            </td> */}
                           <td>{item.FirstName}</td>
                           <td>{item.address}</td>
                           <td className="text-center">{item.phoneNumber}</td>
@@ -171,4 +169,4 @@ const AllOrders = () => {
   );
 };
 
-export default AllOrders;
+export default DeliveredOrders;

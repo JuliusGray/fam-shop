@@ -19,11 +19,11 @@ import "../styles/product-details.css";
 const ProductDetails = () => {
   const [product, setProduct] = useState({});
   const [tab, setTab] = useState("desc");
-  const reviewUser = useRef("");
-  const reviewMsg = useRef("");
+  // const reviewUser = useRef("");
+  // const reviewMsg = useRef("");
   const dispatch = useDispatch();
 
-  const [rating, setRating] = useState(null);
+  // const [rating, setRating] = useState(null);
   const { id } = useParams();
 
   const { data: products } = useGetData("products");
@@ -56,20 +56,20 @@ const ProductDetails = () => {
 
   const relatedProducts = products.filter((item) => item.category === category);
 
-  const submitHandler = (e) => {
-    e.preventDefault();
+  // const submitHandler = (e) => {
+  //   e.preventDefault();
 
-    const reviewUserName = reviewUser.current.value;
-    const reviewUserMsg = reviewMsg.current.value;
+  //   const reviewUserName = reviewUser.current.value;
+  //   const reviewUserMsg = reviewMsg.current.value;
 
-    const reviewobj = {
-      userName: reviewUserName,
-      text: reviewUserMsg,
-      rating,
-    };
+  //   const reviewobj = {
+  //     userName: reviewUserName,
+  //     text: reviewUserMsg,
+  //     rating,
+  //   };
 
-    toast.success("Отзыв отправлен!");
-  };
+  //   toast.success("Отзыв отправлен!");
+  // };
 
   const addToCart = () => {
     dispatch(
@@ -91,12 +91,13 @@ const ProductDetails = () => {
   return (
     <Helmet title={productName}>
       <CommonSection title={productName} />
-
       <section className="pt-0">
         <Container>
           <Row>
             <Col lg="6">
-              <img src={imgUrl} alt="" />
+              <div className="product__img">
+                <img src={imgUrl} alt="" />
+              </div>
             </Col>
             <Col lg="6">
               <div className="product__details">
@@ -119,9 +120,7 @@ const ProductDetails = () => {
                       <i class="ri-star-half-s-line"></i>
                     </span>
                   </div>
-                  <p>
-                    {/* (<span>{avgRating}</span> рейтинг) */}
-                  </p>
+                  <p>{/* (<span>{avgRating}</span> рейтинг) */}</p>
                 </div>
                 <div className="d-flex align-items-center gap-5">
                   <span className="product__price">{price}₽</span>
@@ -174,7 +173,7 @@ const ProductDetails = () => {
                         </li>
                       ))} */}
                     </ul>
-                    <div className="review__form">
+                    {/* <div className="review__form">
                       <h4>Оставьте свой отзыв</h4>
                       <form action="" onSubmit={submitHandler}>
                         <div className="form__group">
@@ -234,7 +233,7 @@ const ProductDetails = () => {
                           Отправить
                         </motion.button>
                       </form>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               )}

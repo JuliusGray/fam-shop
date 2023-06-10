@@ -144,7 +144,7 @@
   position: absolute;
   top: 100%;
   left: 0;
-  width: 150px;
+  width: 165px;
   z-index: 10;
   padding: 15px;
   display: flex;
@@ -158,6 +158,12 @@
 
 .show__profileActions {
   display: block !important;
+}
+
+.profile__actions-line {
+  border: none;
+  border-top: 1px solid #7d7b7b;
+  margin: 0.25em 0;
 }
 
 .mobile__menu {

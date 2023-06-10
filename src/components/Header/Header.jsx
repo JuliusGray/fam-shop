@@ -130,16 +130,45 @@ const Header = () => {
                               <p onClick={toggleProfileActions}>
                                 {item.FirstName}
                               </p>
-                              {currentUser && (
+                              {item.role === "User" && (
                                 <div
                                   className="profile__actions"
                                   ref={profileActionRef}
                                   onClick={toggleProfileActions}
                                 >
                                   <Link to="/profile">Профиль</Link>
-                                  <br />
+                                  <hr className="profile__actions-line" />
                                   <Link to="/my-orders">Мои заказы</Link>
-                                  <br />
+                                  <hr className="profile__actions-line" />
+                                  <span onClick={logout}>Выйти</span>
+                                </div>
+                              )}
+                              {item.role === "Admin" && (
+                                <div
+                                  className="profile__actions"
+                                  ref={profileActionRef}
+                                  onClick={toggleProfileActions}
+                                >
+                                  <Link to="/profile">Профиль</Link>
+                                  <hr className="profile__actions-line" />
+                                  <Link to="/my-orders">Мои заказы</Link>
+                                  <hr className="profile__actions-line" />
+                                  <Link to="/dashboard/all-orders">
+                                    Все заказы
+                                  </Link>
+                                  <hr className="profile__actions-line" />
+                                  <Link to="/dashboard/all-products">
+                                    Все товары
+                                  </Link>
+                                  <hr className="profile__actions-line" />
+                                  <Link to="/dashboard/add-product">
+                                    Добавить товар
+                                  </Link>
+                                  <hr className="profile__actions-line" />
+                                  <Link to="/dashboard/all-users">
+                                    Пользователи
+                                  </Link>
+                                  <hr className="profile__actions-line" />
                                   <span onClick={logout}>Выйти</span>
                                 </div>
                               )}

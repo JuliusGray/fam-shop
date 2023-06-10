@@ -46,10 +46,13 @@ const Home = () => {
               <div className="hero__content">
                 <h2>Семейный - ваш путь к вкусной и здоровой жизни!</h2>
                 <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
-                  optio nisi fugiat praesentium deleniti quas vel id dolor
-                  eligendi magnam illum quidem sint ratione facere dolorum
-                  nihil, in voluptatibus? Aliquid.
+                  Добро пожаловать в магазин "Семейный" — ваш идеальный партнер
+                  в сфере питания и бытовых товаров для всей семьи! Наш магазин
+                  предлагает широкий ассортимент высококачественных продуктов
+                  питания, свежих овощей и фруктов, молочных продуктов, мяса,
+                  рыбы, замороженных товаров, а также товаров для кухни, гигиены
+                  и уборки, которые помогут сделать вашу жизнь более комфортной
+                  и приятной.
                 </p>
                 <motion.button whileTap={{ scale: 1.2 }} className="buy__btn">
                   <Link to="/shop">Перейти в магазин</Link>
