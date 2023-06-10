@@ -25,7 +25,7 @@ const AllProducts = () => {
                   <th>Название</th>
                   <th>Категория</th>
                   <th>Цена</th>
-                  <th>Действие</th>
+                  <th className="text-center">Действие</th>
                 </tr>
               </thead>
               <tbody>
@@ -44,12 +44,20 @@ const AllProducts = () => {
                       <td>{item.productName}</td>
                       <td>{item.category}</td>
                       <td>{item.price}₽</td>
-                      <td>
+                      <td >
                         <button
                           onClick={() => {
                             deleteProd(item.id);
                           }}
-                          className="btn btn-danger"
+                          className="btn btn-info mx-1"
+                        >
+                          Редактировать
+                        </button>
+                        <button
+                          onClick={() => {
+                            deleteProd(item.id);
+                          }}
+                          className="btn btn-danger mx-1"
                         >
                           Удалить
                         </button>
