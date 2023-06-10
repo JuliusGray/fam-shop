@@ -9,6 +9,7 @@ import { auth } from "../../firebase.config";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import useGetData from "../../custom-hooks/useGetData";
+import { motion } from "framer-motion";
 
 const nav__link = [
   {
@@ -30,7 +31,7 @@ const Header = () => {
   const user = auth.currentUser;
   const { data: usersData, loading } = useGetData("users");
   const [currentUser, setCurrentUser] = useState(false);
-  const [isDivVisible, setIsDivVisible] = useState(false); // Добавлено состояние для отслеживания видимости второго div
+  const profileActionRef = useRef(null);
 
   useEffect(() => {
     if (user) {
@@ -64,7 +65,7 @@ const Header = () => {
       console.log("User is not authenticated");
       return;
     }
-  
+
     signOut(auth)
       .then(() => {
         toast.success("Вы вышли из аккаунта");
@@ -83,8 +84,9 @@ const Header = () => {
 
   const menuToggle = () => menuRef.current.classList.toggle("active__menu");
 
-  const toggleDivVisibility = () => {
-    setIsDivVisible(!isDivVisible);
+  const toggleProfileActions = () => {
+    profileActionRef.current.classList.toggle("show__profileActions");
+    console.log("Сработало");
   };
 
   return (
@@ -118,31 +120,29 @@ const Header = () => {
                 </ul>
               </div>
               <div className="nav__icons">
-                <div className="btn">
+                <div className="btn profile">
                   {usersData ? (
                     currentUser ? (
                       usersData.map((item) => {
                         if (item.id === user.uid) {
                           return (
                             <Form key={item.id}>
-                              <p
-                                className="text-color"
-                                onClick={toggleDivVisibility}
-                              >
+                              <p onClick={toggleProfileActions}>
                                 {item.FirstName}
                               </p>
-                              <div className="profile__actions">
-                                <Link to="/profile">Профиль</Link>
-                                <br />
-                                <Link to="/my-orders">Мои заказы</Link>
-                                <br />
-                                <span
-                                  // className="btnLogin-popup"
-                                  onClick={logout}
+                              {currentUser && (
+                                <div
+                                  className="profile__actions"
+                                  ref={profileActionRef}
+                                  onClick={toggleProfileActions}
                                 >
-                                  Выйти
-                                </span>
-                              </div>
+                                  <Link to="/profile">Профиль</Link>
+                                  <br />
+                                  <Link to="/my-orders">Мои заказы</Link>
+                                  <br />
+                                  <span onClick={logout}>Выйти</span>
+                                </div>
+                              )}
                             </Form>
                           );
                         }

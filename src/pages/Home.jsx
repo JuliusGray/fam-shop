@@ -11,23 +11,31 @@ import ProductList from "../components/UI/ProductList";
 import Clock from "../components/UI/Clock";
 import Services from "../services/Services";
 import "../styles/home.css";
+import { useRef } from "react";
 
 const Home = () => {
   const { data: products, loading } = useGetData("products");
   const [newProducts, setNewProducts] = useState([]);
   const [bestProducts, setBestProducts] = useState([]);
+  const scrolNewProductslRef = useRef(null);
+  const scrolBestProductsRef = useRef(null);
 
   useEffect(() => {
-    const filterNewProducts = products.filter(
-      (item) => item.dateUpload <= Date.now()
-    );
+    const filterNewProducts = products
+      .filter((item) => item.dateUpload <= Date.now())
+      .slice(0, 10);
+
     setNewProducts(filterNewProducts);
 
-    const filterBestProducts = products.filter(
-      (item) => item.rating === "4.9" || item.rating === "4.8"
-    );
+    const filterBestProducts = products
+      .filter((item) => item.rating === "4.9" || item.rating === "4.8")
+      .slice(0, 10);
     setBestProducts(filterBestProducts);
   }, [products]);
+
+  const handleScroll = (scrollOffset, componentRef) => {
+    componentRef.current.scrollLeft += scrollOffset;
+  };
 
   return (
     <Helmet title={"Главная"}>
@@ -56,7 +64,8 @@ const Home = () => {
           </Row>
         </Container>
       </section>
-      <section className="trending__products">
+      <Services />
+      <section>
         <Container>
           <Row>
             <Col lg="12" className="text-center">
@@ -65,21 +74,23 @@ const Home = () => {
             {loading ? (
               <h5 className="fw-bold">Loading....</h5>
             ) : (
-              <ProductList data={newProducts} />
-            )}
-          </Row>
-        </Container>
-      </section>
-      <section className="best__sales">
-        <Container>
-          <Row>
-            <Col lg="12" className="text-center">
-              <h2 className="section__title">Выбор покупателя</h2>
-            </Col>
-            {loading ? (
-              <h5 className="fw-bold">Loading....</h5>
-            ) : (
-              <ProductList data={bestProducts} />
+              <div className="trending__products-container">
+                <button
+                  className="scroll-button left"
+                  onClick={() => handleScroll(-1000, scrolNewProductslRef)}
+                >
+                  &lt; {/* Left arrow */}
+                </button>
+                <div className="trending__products" ref={scrolNewProductslRef}>
+                  <ProductList data={newProducts} />
+                </div>
+                <button
+                  className="scroll-button right"
+                  onClick={() => handleScroll(1000, scrolNewProductslRef)}
+                >
+                  &gt; {/* Right arrow */}
+                </button>
+              </div>
             )}
           </Row>
         </Container>
@@ -108,7 +119,37 @@ const Home = () => {
           </Row>
         </Container>
       </section>
-      <section className="new__arrivals">
+      <section className="best__sales">
+        <Container>
+          <Row>
+            <Col lg="12" className="text-center">
+              <h2 className="section__title">Выбор покупателя</h2>
+            </Col>
+            {loading ? (
+              <h5 className="fw-bold">Loading....</h5>
+            ) : (
+              <div className="trending__products-container">
+                <button
+                  className="scroll-button left"
+                  onClick={() => handleScroll(-1000, scrolBestProductsRef)}
+                >
+                  &lt; {/* Left arrow */}
+                </button>
+                <div className="trending__products" ref={scrolBestProductsRef}>
+                  <ProductList data={bestProducts} />
+                </div>
+                <button
+                  className="scroll-button right"
+                  onClick={() => handleScroll(1000, scrolBestProductsRef)}
+                >
+                  &gt; {/* Right arrow */}
+                </button>
+              </div>
+            )}
+          </Row>
+        </Container>
+      </section>
+      {/* <section className="new__arrivals">
         <Container>
           <Row>
             <Col lg="12" className="text-center">
@@ -117,8 +158,7 @@ const Home = () => {
             </Col>
           </Row>
         </Container>
-      </section>
-      <Services />
+      </section> */}
     </Helmet>
   );
 };

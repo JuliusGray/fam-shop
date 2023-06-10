@@ -73,7 +73,15 @@ const Footer = () => {
           </Col>
           <Col lg="12">
             <p className="footer__copyright">
-              ©Copyright {year} developed by Dixai. All rights reserved.
+              © Copyright {year} developed by{" "}
+              <a
+                href="https://github.com/dixai"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Dixai
+              </a>
+              . All rights reserved.
             </p>
           </Col>
         </Row>

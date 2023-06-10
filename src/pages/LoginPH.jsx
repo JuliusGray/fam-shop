@@ -115,9 +115,28 @@ const LoginPH = (callback) => {
           setShowForm(true);
         }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
         setLoading(false);
+        if (error && error.code) {
+          if (error.code === "auth/too-many-requests") {
+            toast.error(
+              "Слишком много запросов. Пожалуйста, повторите попытку позже."
+            );
+          }
+          if (error.code === "auth/quota-exceeded") {
+            toast.error(
+              "Превышен лимит авторизаций в час. Пожалуйста, повторите попытку позже."
+            );
+          }
+          if (error.code === "auth/invalid-verification-code") {
+            toast.error(
+              "Введен неправильный код. Пожалуйста, повторите попытку."
+            );
+          }
+        } else {
+          toast.error("Произошла ошибка. Пожалуйста, повторите попытку позже.");
+        }
       });
   }
 

@@ -157,7 +157,7 @@
 }
 
 .show__profileActions {
-  display: block;
+  display: block !important;
 }
 
 .mobile__menu {
