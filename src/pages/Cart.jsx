@@ -57,9 +57,9 @@ const Cart = () => {
               </div>
               <div>
                 {canProceedToCheckout ? (
-                  <button className="buy__btn w-100">
-                    <Link to="/checkout">Оформить заказ</Link>
-                  </button>
+                  <Link to="/checkout">
+                    <button className="buy__btn w-100">Оформить заказ</button>
+                  </Link>
                 ) : (
                   <button className="buy__btn w-100" onClick={notify}>
                     Оформить заказ
@@ -121,7 +121,7 @@ const Tr = ({ item }) => {
           whileTap={{ scale: 1.2 }}
           onClick={deleteProduct}
           class="ri-delete-bin-line"
-          style={{ fontSize: '25px' }}
+          style={{ fontSize: "25px" }}
         ></motion.i>
       </td>
     </tr>

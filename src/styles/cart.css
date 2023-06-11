@@ -1,7 +1,6 @@
-.table tr td  {
-  width: 80px !important;
-  height: 80px !important;
-  object-fit: cover;
+.table tr td img{
+  width: 100px !important;
+  height: 100px !important;
 }
 
 .img__product img{
@@ -16,7 +15,6 @@
 .centered-cell {
   display: table-cell;
   vertical-align: middle;
-  /* text-align: center; */
 }
 
 td i {

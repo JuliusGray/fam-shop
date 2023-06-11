@@ -72,7 +72,9 @@ const AllOrders = () => {
               <Link to="/dashboard/delivered-orders">
                 <button className="btn btn-success mx-1">Доставленные</button>
               </Link>
-              <button className="btn btn-danger mx-1">Отмененные</button>
+              <Link to="/dashboard/cancel-orders">
+                <button className="btn btn-danger mx-1">Отмененные</button>
+              </Link>
             </div>
           </Col>
         </Row>
