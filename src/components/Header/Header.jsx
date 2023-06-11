@@ -169,6 +169,8 @@ const Header = () => {
                                     Пользователи
                                   </Link>
                                   <hr className="profile__actions-line" />
+                                  <Link to="/dashboard">Статистика</Link>
+                                  <hr className="profile__actions-line" />
                                   <span onClick={logout}>Выйти</span>
                                 </div>
                               )}
