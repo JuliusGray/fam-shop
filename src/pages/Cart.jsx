@@ -7,10 +7,19 @@ import { motion } from "framer-motion";
 import { cartActions } from "../redux/slices/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
+
+  const canProceedToCheckout = cartItems.length > 0;
+
+  const notify = () => {
+    toast.error(
+      "Перейти к оформлению заказа невозможно, так как в корзине нет товаров!"
+    );
+  };
 
   return (
     <Helmet title="Корзина">
@@ -25,11 +34,11 @@ const Cart = () => {
                 <table className="table bordered">
                   <thead>
                     <tr>
-                      <th>Image</th>
-                      <th>Title</th>
-                      <th>Price</th>
-                      <th>Qty</th>
-                      <th>Delete</th>
+                      <th className="text-center">Изображение</th>
+                      <th className="text-center">Название</th>
+                      <th className="text-center">Цена</th>
+                      <th className="text-center">Количество</th>
+                      <th className="text-center">Удалить</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -47,9 +56,15 @@ const Cart = () => {
                 </h6>
               </div>
               <div>
-                <button className="buy__btn w-100">
-                  <Link to="/checkout">Оформить заказ</Link>
-                </button>
+                {canProceedToCheckout ? (
+                  <button className="buy__btn w-100">
+                    <Link to="/checkout">Оформить заказ</Link>
+                  </button>
+                ) : (
+                  <button className="buy__btn w-100" onClick={notify}>
+                    Оформить заказ
+                  </button>
+                )}
               </div>
             </Col>
           </Row>
@@ -83,12 +98,12 @@ const Tr = ({ item }) => {
 
   return (
     <tr>
-      <td>
-        <img src={item.imgUrl} alt="" />
+      <td className="img__product">
+        <img src={item.imgUrl} alt="" className="img__product" />
       </td>
-      <td>{item.productName}</td>
-      <td>{item.price}₽</td>
-      <td>
+      <td className="centered-cell">{item.productName}</td>
+      <td className="centered-cell text-center">{item.price}₽</td>
+      <td className="centered-cell text-center">
         <motion.i
           whileTap={{ scale: 1.2 }}
           onClick={delProduct}
@@ -101,11 +116,12 @@ const Tr = ({ item }) => {
           class="ri-add-line"
         ></motion.i>
       </td>
-      <td>
+      <td className="centered-cell text-center">
         <motion.i
           whileTap={{ scale: 1.2 }}
           onClick={deleteProduct}
           class="ri-delete-bin-line"
+          style={{ fontSize: '25px' }}
         ></motion.i>
       </td>
     </tr>

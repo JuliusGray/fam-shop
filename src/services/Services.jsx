@@ -10,7 +10,7 @@ const Services = () => {
   return (
     <section className="services">
       <Container>
-        <Row>
+        <Row className="d-flex justify-content-center">
           {serviceData.map((item, index) => (
             <Col lg="3" mg="4" key={index}>
               <motion.div

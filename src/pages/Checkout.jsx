@@ -17,6 +17,9 @@ const Checkout = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalQty = useSelector((state) => state.cart.totalQuantity);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const discount = useSelector((state) => state.cart.discount);
+  const shippingCost = useSelector((state) => state.cart.shippingCost);
+  const totalOrderAmount = useSelector((state) => state.cart.totalOrderAmount);
   const { data: usersData, loading } = useGetData("users");
   const user = auth.currentUser;
   const [address, setAddress] = useState("");
@@ -127,6 +130,9 @@ const Checkout = () => {
                               type="text"
                               value={firstName}
                               onChange={(e) => setFirstName(e.target.value)}
+                              readOnly
+                              className="block-input"
+                              title="Изменить Имя можно в личном кабинете"
                             />
                           )}
                         </FormGroup>
@@ -143,6 +149,9 @@ const Checkout = () => {
                               type="text"
                               value={phoneNumber}
                               onChange={(e) => setPhoneNumber(e.target.value)}
+                              readOnly
+                              className="block-input"
+                              title="Изменить Номер телефона можно в личном кабинете"
                             />
                           )}
                         </FormGroup>
@@ -159,6 +168,9 @@ const Checkout = () => {
                               type="text"
                               value={address}
                               onChange={(e) => setAddress(e.target.value)}
+                              readOnly
+                              className="block-input"
+                              title="Изменить Адрес можно в личном кабинете"
                             />
                           )}
                         </FormGroup>
@@ -179,13 +191,18 @@ const Checkout = () => {
                 </h6>
                 <h6>
                   <span>
-                    Доставка: <br />
-                    Бесплатная доставка
+                    Скидка: 
                   </span>
-                  <span>0.00₽</span>
+                  <span>{discount}%</span>
+                </h6>
+                <h6>
+                  <span>
+                    Доставка: 
+                  </span>
+                  <span>{shippingCost}₽</span>
                 </h6>
                 <h4>
-                  Итого: <span>{totalAmount}₽</span>
+                  Итого: <span>{totalOrderAmount}₽</span>
                 </h4>
                 <h6>
                   <span>Оплата товара при получении</span>

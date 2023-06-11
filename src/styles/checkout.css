@@ -35,3 +35,8 @@ h4 {
   border-top: 1px solid rgba(221, 221, 221, 0.253);
   padding-top: 20px;
 }
+
+.block-input {
+  color: gray;
+  cursor: not-allowed;
+}

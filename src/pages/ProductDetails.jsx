@@ -10,7 +10,6 @@ import { db } from "../firebase.config";
 import { doc, getDoc } from "firebase/firestore";
 
 import Helmet from "../components/Helmet/Helmet";
-import CommonSection from "../components/UI/CommonSection";
 import ProductsList from "../components/UI/ProductList";
 import useGetData from "../custom-hooks/useGetData";
 
@@ -90,7 +89,6 @@ const ProductDetails = () => {
 
   return (
     <Helmet title={productName}>
-      <CommonSection title={productName} />
       <section className="pt-0">
         <Container>
           <Row>
