@@ -190,7 +190,7 @@ const LoginPH = (callback) => {
               <div ref={recaptchaContainerRef} id="recaptcha-container"></div>
               <div className="w-80 flex flex-col gap-4 rounded-lg p-4 my-4">
                 <h1 className="text-center leading-normal text-black font-medium text-3xl mb-6">
-                  Авторизация
+                  {showForm ? "Регистрация" : "Авторизация"}
                 </h1>
                 {showOTP ? (
                   <>
@@ -223,52 +223,36 @@ const LoginPH = (callback) => {
                   </>
                 ) : showForm ? (
                   <>
-                    <div className="bg-white text-emerald-500 w-fit mx-auto p-4 rounded-full">
-                      <BsTelephoneFill size={30} />
-                    </div>
                     <form
                       onSubmit={onFormSubmit}
                       className="flex flex-col gap-4"
                     >
-                      <label
-                        htmlFor="firstName"
-                        className="font-bold text-xl text-black"
-                      >
-                        Имя
-                      </label>
+                      <br />
                       <input
                         type="text"
                         id="firstName"
+                        placeholder="Введите имя"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
-                        className="input-field"
+                        className="input-field mx-1"
                       />
-                      <label
-                        htmlFor="lastName"
-                        className="font-bold text-xl text-black"
-                      >
-                        Фамилия
-                      </label>
                       <input
                         type="text"
                         id="lastName"
+                        placeholder="Введите фамилию"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
-                        className="input-field"
+                        className="input-field mx-1"
                       />
-                      <label
-                        htmlFor="birthDate"
-                        className="font-bold text-xl text-black"
-                      >
-                        Дата рождения
-                      </label>
                       <input
                         type="date"
                         id="birthDate"
+                        placeholder="Дата рождения"
                         value={birthDate}
                         onChange={(e) => setBirthDate(e.target.value)}
-                        className="input-field"
+                        className="input-field mx-1"
                       />
+                      <br />
                       <button type="submit" className="buy__btn">
                         {loading && (
                           <CgSpinner size={20} className="mt-1 animate-spin" />
