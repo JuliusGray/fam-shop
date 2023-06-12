@@ -21,10 +21,10 @@ const AllProducts = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>Изображение</th>
-                  <th>Название</th>
-                  <th>Категория</th>
-                  <th>Цена</th>
+                  <th className="text-center">Изображение</th>
+                  <th className="text-center">Название</th>
+                  <th className="text-center">Категория</th>
+                  <th className="text-center">Цена</th>
                   <th className="text-center">Действие</th>
                 </tr>
               </thead>
@@ -38,13 +38,13 @@ const AllProducts = () => {
                 ) : (
                   productsData.map((item) => (
                     <tr key={item.id}>
-                      <td>
+                      <td className="img__product">
                         <img src={item.imgUrl} />
                       </td>
-                      <td>{item.productName}</td>
-                      <td>{item.category}</td>
-                      <td>{item.price}₽</td>
-                      <td >
+                      <td className="centered-cell">{item.productName}</td>
+                      <td className="centered-cell text-center">{item.category}</td>
+                      <td className="centered-cell text-center">{item.price}₽</td>
+                      <td className="centered-cell text-center">
                         <button
                           onClick={() => {
                             deleteProd(item.id);

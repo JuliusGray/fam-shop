@@ -165,7 +165,7 @@ const Header = () => {
                                     Добавить товар
                                   </Link>
                                   <hr className="profile__actions-line" />
-                                  <Link to="/dashboard/all-users">
+                                  <Link to="/dashboard/users">
                                     Пользователи
                                   </Link>
                                   <hr className="profile__actions-line" />
