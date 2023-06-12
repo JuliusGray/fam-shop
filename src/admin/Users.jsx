@@ -24,10 +24,12 @@ const Users = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>Фамилия</th>
-                  <th>Имя</th>
-                  <th>Email</th>
-                  <th>Действие</th>
+                  <th className="text-center">Фамилия</th>
+                  <th className="text-center">Имя</th>
+                  <th className="text-center">Email</th>
+                  <th className="text-center">Номер тeлефона</th>
+                  <th className="text-center">Адрес</th>
+                  <th className="text-center">Действие</th>
                 </tr>
               </thead>
               <tbody>
@@ -39,13 +41,23 @@ const Users = () => {
                       <tr key={item.id}>
                         <td>{item.SurName}</td>
                         <td>{item.FirstName}</td>
-                        <td>{item.email}</td>
-                        <td>
+                        <td className="text-center">{item.email}</td>
+                        <td className="text-center">{item.phoneNumber}</td>
+                        <td>{item.address}</td>
+                        <td className="text-center">
+                          <button
+                            // onClick={() => {
+                            //   deleteUser(item.id);
+                            // }}
+                            className="btn btn-info mx-1"
+                          >
+                            Редактировать
+                          </button>
                           <button
                             onClick={() => {
                               deleteUser(item.id);
                             }}
-                            className="btn btn-danger"
+                            className="btn btn-danger mx-1"
                           >
                             Удалить
                           </button>

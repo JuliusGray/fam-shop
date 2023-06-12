@@ -82,7 +82,7 @@ const Home = () => {
                   className="scroll-button left"
                   onClick={() => handleScroll(-1000, scrolNewProductslRef)}
                 >
-                  &lt; {/* Left arrow */}
+                  &lt;
                 </button>
                 <div className="trending__products" ref={scrolNewProductslRef}>
                   <ProductList data={newProducts} />
@@ -91,7 +91,7 @@ const Home = () => {
                   className="scroll-button right"
                   onClick={() => handleScroll(1000, scrolNewProductslRef)}
                 >
-                  &gt; {/* Right arrow */}
+                  &gt;
                 </button>
               </div>
             )}
@@ -138,7 +138,7 @@ const Home = () => {
                   className="scroll-button left"
                   onClick={() => handleScroll(-1000, scrolBestProductsRef)}
                 >
-                  &lt; {/* Left arrow */}
+                  &lt;
                 </button>
                 <div className="trending__products" ref={scrolBestProductsRef}>
                   <ProductList data={bestProducts} />
@@ -147,23 +147,13 @@ const Home = () => {
                   className="scroll-button right"
                   onClick={() => handleScroll(1000, scrolBestProductsRef)}
                 >
-                  &gt; {/* Right arrow */}
+                  &gt;
                 </button>
               </div>
             )}
           </Row>
         </Container>
       </section>
-      {/* <section className="new__arrivals">
-        <Container>
-          <Row>
-            <Col lg="12" className="text-center">
-              <h2 className="section__title">Новые поступления</h2>
-              <p className="section__subtitle">Нет поступлений</p>
-            </Col>
-          </Row>
-        </Container>
-      </section> */}
     </Helmet>
   );
 };
