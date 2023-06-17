@@ -34,7 +34,7 @@ const cartSlice = createSlice({
           productName: newItem.productName,
           imgUrl: newItem.imgUrl,
           price: parseFloat(newItem.price).toFixed(2),
-          quantity: 1,
+          quantity: parseInt(1),
           totalPrice: parseFloat(newItem.price).toFixed(2),
         });
       } else {

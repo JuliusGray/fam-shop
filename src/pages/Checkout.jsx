@@ -4,12 +4,18 @@ import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 import useGetData from "../custom-hooks/useGetData";
 import { auth } from "../firebase.config";
-import { collection, addDoc, getDocs, where } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  where,
+  doc,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../firebase.config";
 import { cartActions } from "../redux/slices/cartSlice";
-
 import "../styles/checkout.css";
-
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -76,6 +82,11 @@ const Checkout = () => {
   }));
 
   const setOrder = async (e) => {
+    if (!firstName || !phoneNumber || !address) {
+      toast.error("Пожалуйста, заполните все поля.");
+      return;
+    }
+
     e.preventDefault();
     try {
       const ordersRef = collection(db, "orders");
@@ -84,16 +95,28 @@ const Checkout = () => {
         phoneNumber: phoneNumber,
         FirstName: firstName,
         address: address,
-        price: totalAmount,
+        price: parseInt(totalOrderAmount),
         date: `${Date.now()}`,
         status: "В обработке",
         orderItems: orderItems,
       });
+
+      for (const item of orderItems) {
+        const productRef = doc(db, "products", item.id);
+        const productDoc = await getDoc(productRef);
+
+        if (productDoc.exists()) {
+          const productData = productDoc.data();
+
+          const newQuantity = productData.qut - item.qty;
+
+          await updateDoc(productRef, { qut: newQuantity });
+        }
+      }
+
       toast.success("Заказ успешно оформлен!");
-      console.log("Order added successfully!");
       dispatch(cartActions.clearCart());
     } catch (error) {
-      console.log("Error adding order: ", error);
       toast.error("Что-то пошло не так!");
     }
   };
@@ -190,15 +213,11 @@ const Checkout = () => {
                   Стоимость: <span>{totalAmount}₽</span>
                 </h6>
                 <h6>
-                  <span>
-                    Скидка: 
-                  </span>
+                  <span>Скидка:</span>
                   <span>{discount}%</span>
                 </h6>
                 <h6>
-                  <span>
-                    Доставка: 
-                  </span>
+                  <span>Доставка:</span>
                   <span>{shippingCost}₽</span>
                 </h6>
                 <h4>

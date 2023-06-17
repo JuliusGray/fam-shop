@@ -47,7 +47,7 @@ const Users = () => {
                         <td className="text-center">
                           <button
                             // onClick={() => {
-                            //   deleteUser(item.id);
+                            //   editUser(item.id);
                             // }}
                             className="btn btn-info mx-1"
                           >

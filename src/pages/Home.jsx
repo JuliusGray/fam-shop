@@ -28,7 +28,7 @@ const Home = () => {
     setNewProducts(filterNewProducts);
 
     const filterBestProducts = products
-      .filter((item) => item.rating === "4.9" || item.rating === "4.8")
+      .filter((item) => item.rating === 4.9 || item.rating === 4.8)
       .slice(0, 10);
     setBestProducts(filterBestProducts);
   }, [products]);

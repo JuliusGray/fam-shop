@@ -12,6 +12,7 @@ const AddProducts = () => {
   const [enterDesc, setDesc] = useState("");
   const [enterCategory, setCategory] = useState("");
   const [enterPrice, setPrice] = useState("");
+  const [enterQut, setQut] = useState("");
   const [enterProdImg, setProdImg] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isImageUploaded, setImageUploaded] = useState(false);
@@ -47,7 +48,8 @@ const AddProducts = () => {
               category: enterCategory,
               price: enterPrice,
               imgUrl: downloadUrl,
-              rating: "0",
+              rating: parseInt("0"),
+              qut: parseInt(enterQut),
               dateUpload: `${Date.now()}`,
             });
           });
@@ -115,6 +117,17 @@ const AddProducts = () => {
                         placeholder="0₽"
                         value={enterPrice}
                         onChange={(e) => setPrice(e.target.value)}
+                        required
+                      />
+                    </FormGroup>
+
+                    <FormGroup className="form__group">
+                      <span>Количество на складе</span>
+                      <input
+                        type="text"
+                        placeholder="0"
+                        value={enterQut}
+                        onChange={(e) => setQut(e.target.value)}
                         required
                       />
                     </FormGroup>

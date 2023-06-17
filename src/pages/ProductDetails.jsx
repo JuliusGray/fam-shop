@@ -18,15 +18,9 @@ import "../styles/product-details.css";
 const ProductDetails = () => {
   const [product, setProduct] = useState({});
   const [tab, setTab] = useState("desc");
-  // const reviewUser = useRef("");
-  // const reviewMsg = useRef("");
   const dispatch = useDispatch();
-
-  // const [rating, setRating] = useState(null);
   const { id } = useParams();
-
   const { data: products } = useGetData("products");
-
   const docRef = doc(db, "products", id);
 
   useEffect(() => {
@@ -46,29 +40,13 @@ const ProductDetails = () => {
     imgUrl,
     productName,
     price,
-    // avgRating,
-    // reviews,
+    rating,
     desc,
     shortDesc,
     category,
   } = product;
 
-  const relatedProducts = products.filter((item) => item.category === category);
-
-  // const submitHandler = (e) => {
-  //   e.preventDefault();
-
-  //   const reviewUserName = reviewUser.current.value;
-  //   const reviewUserMsg = reviewMsg.current.value;
-
-  //   const reviewobj = {
-  //     userName: reviewUserName,
-  //     text: reviewUserMsg,
-  //     rating,
-  //   };
-
-  //   toast.success("Отзыв отправлен!");
-  // };
+  const relatedProducts = products.filter((item) => item.category === category).slice(0, 10);
 
   const addToCart = () => {
     dispatch(
@@ -118,7 +96,7 @@ const ProductDetails = () => {
                       <i class="ri-star-half-s-line"></i>
                     </span>
                   </div>
-                  <p>{/* (<span>{avgRating}</span> рейтинг) */}</p>
+                  <p>(<span>{rating}</span> рейтинг)</p>
                 </div>
                 <div className="d-flex align-items-center gap-5">
                   <span className="product__price">{price}₽</span>
@@ -148,93 +126,10 @@ const ProductDetails = () => {
                 >
                   Описание
                 </h6>
-                <h6
-                  className={`${tab === "rev" ? "active__tab" : ""}`}
-                  onClick={() => setTab("rev")}
-                >
-                  {/* Отзывы ({reviews.length}) */}
-                </h6>
               </div>
-              {tab === "desc" ? (
-                <div className="tab__content mt-5">
-                  <p>{desc}</p>
-                </div>
-              ) : (
-                <div className="product__review mt-5">
-                  <div className="review__wrap">
-                    <ul>
-                      {/* {reviews?.map((item, index) => (
-                        <li key={index} className="mb-4">
-                          <h6>Имя пользователя</h6>
-                          <span>{item.rating} (рейтинг)</span>
-                          <p>{item.text}</p>
-                        </li>
-                      ))} */}
-                    </ul>
-                    {/* <div className="review__form">
-                      <h4>Оставьте свой отзыв</h4>
-                      <form action="" onSubmit={submitHandler}>
-                        <div className="form__group">
-                          <input
-                            type="text"
-                            placeholder="Enter name"
-                            ref={reviewUser}
-                            required
-                          />
-                        </div>
-                        <div className="form__group d-flex align-items-center gap-5 rating__group">
-                          <motion.span
-                            whileTap={{ scale: 1.2 }}
-                            onClick={() => setRating(1)}
-                          >
-                            1 <i className="ri-star-s-fill"></i>
-                          </motion.span>
-                          <motion.span
-                            whileTap={{ scale: 1.2 }}
-                            onClick={() => setRating(2)}
-                          >
-                            2 <i className="ri-star-s-fill"></i>
-                          </motion.span>
-                          <motion.span
-                            whileTap={{ scale: 1.2 }}
-                            onClick={() => setRating(3)}
-                          >
-                            3 <i className="ri-star-s-fill"></i>
-                          </motion.span>
-                          <motion.span
-                            whileTap={{ scale: 1.2 }}
-                            onClick={() => setRating(4)}
-                          >
-                            4 <i className="ri-star-s-fill"></i>
-                          </motion.span>
-                          <motion.span
-                            whileTap={{ scale: 1.2 }}
-                            onClick={() => setRating(5)}
-                          >
-                            5 <i className="ri-star-s-fill"></i>
-                          </motion.span>
-                        </div>
-                        <div className="form__group">
-                          <textarea
-                            ref={reviewMsg}
-                            rows={4}
-                            type="text"
-                            placeholder="Отзыв..."
-                            required
-                          />
-                        </div>
-                        <motion.button
-                          whileTap={{ scale: 1.2 }}
-                          type="submit"
-                          className="buy__btn"
-                        >
-                          Отправить
-                        </motion.button>
-                      </form>
-                    </div> */}
-                  </div>
-                </div>
-              )}
+              <div className="tab__content mt-5">
+                <p>{desc}</p>
+              </div>
             </Col>
             <Col lg="12" className="mt-5">
               <h2 className="related__title">Вам также может понравиться</h2>

@@ -36,7 +36,7 @@ const Footer = () => {
                   <Link to="/cart">Корзина</Link>
                 </ListGroupItem>
                 <ListGroupItem className="ps-0 border-0">
-                  <Link to="/login">Вход</Link>
+                  <Link to="/">Главная</Link>
                 </ListGroupItem>
                 <ListGroupItem className="ps-0 border-0">
                   <Link to="#">Политика приватности</Link>
@@ -74,7 +74,7 @@ const Footer = () => {
           </Col>
           <Col lg="12">
             <p className="footer__copyright">
-              © Copyright {year} developed by{" "}
+              © Copyright {year} разработано{" "}
               <a
                 href="https://github.com/dixai"
                 target="_blank"
@@ -82,7 +82,7 @@ const Footer = () => {
               >
                 Dixai
               </a>
-              . All rights reserved.
+              . Все права защищены.
             </p>
           </Col>
         </Row>

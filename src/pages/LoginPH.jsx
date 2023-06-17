@@ -1,18 +1,17 @@
-import { BsFillShieldLockFill, BsTelephoneFill } from "react-icons/bs";
-import { CgSpinner } from "react-icons/cg";
-
-import OtpInput from "otp-input-react";
 import React, { useState, useEffect, useRef, useMemo } from "react";
+import { Container, Row, Col } from "reactstrap";
+import { CgSpinner } from "react-icons/cg";
+import { BsFillShieldLockFill, BsTelephoneFill } from "react-icons/bs";
+import OtpInput from "otp-input-react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { auth } from "../firebase.config";
+import { db } from "../firebase.config";
 import Helmet from "../components/Helmet/Helmet";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 import { setDoc, doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col } from "reactstrap";
 
 const CACHE_KEY_PH = "cached_ph";
 
@@ -59,7 +58,7 @@ const LoginPH = (callback) => {
 
   async function onSignup() {
     if (loading) {
-      return; // Предотвращаем повторный вызов, если уже идет загрузка
+      return;
     }
     setLoading(true);
     onCaptchaVerify();

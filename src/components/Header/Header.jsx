@@ -9,7 +9,6 @@ import { auth } from "../../firebase.config";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import useGetData from "../../custom-hooks/useGetData";
-import { motion } from "framer-motion";
 
 const nav__link = [
   {
@@ -53,23 +52,23 @@ const Header = () => {
         document.body.scrollTop > 80 ||
         document.documentElement.scrollTop > 80
       ) {
-        headerRef.current.classList.add("stycky__header");
+        if (headerRef.current) {
+          headerRef.current.classList.add("stycky__header");
+        }
       } else {
-        headerRef.current.classList.remove("stycky__header");
+        if (headerRef.current) {
+          headerRef.current.classList.remove("stycky__header");
+        }
       }
     });
   };
 
   const logout = () => {
-    if (!user) {
-      console.log("User is not authenticated");
-      return;
-    }
-
     signOut(auth)
       .then(() => {
         toast.success("Вы вышли из аккаунта");
-        navigate("/home");
+        navigate("/");
+        console.log("Вы вышли");
       })
       .catch((err) => {
         toast.error(err.message);
@@ -80,13 +79,12 @@ const Header = () => {
     stickyHeaderFunc();
 
     return () => window.removeEventListener("scroll", stickyHeaderFunc);
-  });
+  }, []);
 
   const menuToggle = () => menuRef.current.classList.toggle("active__menu");
 
   const toggleProfileActions = () => {
     profileActionRef.current.classList.toggle("show__profileActions");
-    console.log("Сработало");
   };
 
   return (
@@ -124,7 +122,7 @@ const Header = () => {
                   {usersData ? (
                     currentUser ? (
                       usersData.map((item) => {
-                        if (item.id === user.uid) {
+                        if (item.id === (user && user.uid)) {
                           return (
                             <Form key={item.id}>
                               <p onClick={toggleProfileActions}>

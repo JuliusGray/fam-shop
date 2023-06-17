@@ -107,13 +107,13 @@ const Tr = ({ item }) => {
         <motion.i
           whileTap={{ scale: 1.2 }}
           onClick={delProduct}
-          class="ri-subtract-line"
+          class="ri-subtract-line mx-1"
         ></motion.i>
-        {item.quantity}px
+        {item.quantity} шт
         <motion.i
           whileTap={{ scale: 1.2 }}
           onClick={addToCard}
-          class="ri-add-line"
+          class="ri-add-line mx-1"
         ></motion.i>
       </td>
       <td className="centered-cell text-center">
