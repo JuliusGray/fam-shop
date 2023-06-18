@@ -101,13 +101,12 @@ const calculateTotalAmount = (cartItems) => {
 
 const applyDiscountAndShippingCost = (state) => {
   const { totalAmount } = state;
-  const discountPer500 = 5; // 5% скидка за каждые 500
-  const shippingCostPer500 = 5; // 5 рублей скидка за каждые 500
-  const shippingCostBase = 50; // Базовая стоимость доставки
+  const discountPer1000 = 5; 
+  const shippingCostBase = 50; 
 
-  if (totalAmount >= 500) {
-    let discount = Math.floor(totalAmount / 500) * discountPer500;
-    discount = Math.min(discount, 25); // Ограничение скидки до максимального значения 25
+  if (totalAmount >= 1000) {
+    let discount = Math.floor(totalAmount / 1000) * discountPer1000;
+    discount = Math.min(discount, 25);
     state.discount = discount;
     state.subtotalAmount = parseFloat(
       totalAmount - (totalAmount * discount) / 100
@@ -118,7 +117,7 @@ const applyDiscountAndShippingCost = (state) => {
   }
 
   const shippingCostDiscount =
-    Math.floor(totalAmount / 500) * shippingCostPer500;
+    Math.floor(totalAmount / 1000) * shippingCostBase;
   state.shippingCost = Math.max(shippingCostBase - shippingCostDiscount, 0);
 
   state.totalOrderAmount = parseFloat(

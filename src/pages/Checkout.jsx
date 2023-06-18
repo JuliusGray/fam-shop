@@ -18,6 +18,7 @@ import { cartActions } from "../redux/slices/cartSlice";
 import "../styles/checkout.css";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -31,7 +32,20 @@ const Checkout = () => {
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [firstName, setFirstName] = useState("");
+  const [deliveryTime, setDeliveryTime] = useState("");
   const dispatch = useDispatch();
+  const deliveryTimes = [
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00",
+    "19:00",
+  ];
+  const navigate = useNavigate("");
 
   const checkUserDataInDatabase = async (userId) => {
     try {
@@ -81,13 +95,29 @@ const Checkout = () => {
     qty: item.quantity,
   }));
 
+  const handleDeliveryTimeChange = (time) => {
+    setDeliveryTime(time);
+  };
+
   const setOrder = async (e) => {
-    if (!firstName || !phoneNumber || !address) {
-      toast.error("Пожалуйста, заполните все поля.");
+    e.preventDefault();
+    if (!firstName) {
+      toast.error("Пожалуйста, введите имя.");
+      return;
+    }
+    if (!phoneNumber) {
+      toast.error("Пожалуйста, введите номер телефона.");
+      return;
+    }
+    if (!address) {
+      toast.error("Пожалуйста, введите адрес.");
+      return;
+    }
+    if (!deliveryTime) {
+      toast.error("Пожалуйста, выберите время.");
       return;
     }
 
-    e.preventDefault();
     try {
       const ordersRef = collection(db, "orders");
       await addDoc(ordersRef, {
@@ -99,6 +129,7 @@ const Checkout = () => {
         date: `${Date.now()}`,
         status: "В обработке",
         orderItems: orderItems,
+        deliveryTime: deliveryTime,
       });
 
       for (const item of orderItems) {
@@ -116,10 +147,13 @@ const Checkout = () => {
 
       toast.success("Заказ успешно оформлен!");
       dispatch(cartActions.clearCart());
+      navigate("/my-orders");
     } catch (error) {
       toast.error("Что-то пошло не так!");
     }
   };
+
+  const hasItemsInCart = cartItems.length > 0;
 
   return (
     <Helmet title="Заказ">
@@ -127,114 +161,146 @@ const Checkout = () => {
       <section>
         <Container>
           <Row>
-            <Col lg="8">
-              <h6 className="mb-4 fw-bold">Адресная информация</h6>
-              {loading ? (
-                <h5 className="fw-bold">Loading....</h5>
-              ) : (
-                usersData?.map((item) => {
-                  if (item.id === user.uid) {
-                    return (
-                      <Form
-                        key={item.id}
-                        className="billing__form"
-                        onSubmit={setOrder}
-                      >
-                        <FormGroup className="form__group">
-                          {item.FirstName === "-" ? (
-                            <input
-                              type="text"
-                              placeholder="Введите ваше имя"
-                              value={firstName}
-                              onChange={(e) => setFirstName(e.target.value)}
-                            />
-                          ) : (
-                            <input
-                              type="text"
-                              value={firstName}
-                              onChange={(e) => setFirstName(e.target.value)}
-                              readOnly
-                              className="block-input"
-                              title="Изменить Имя можно в личном кабинете"
-                            />
-                          )}
-                        </FormGroup>
-                        <FormGroup className="form__group">
-                          {item.phoneNumber === "-" ? (
-                            <input
-                              type="number"
-                              placeholder="Введите номер телефона"
-                              value={phoneNumber}
-                              onChange={(e) => setPhoneNumber(e.target.value)}
-                            />
-                          ) : (
-                            <input
-                              type="text"
-                              value={phoneNumber}
-                              onChange={(e) => setPhoneNumber(e.target.value)}
-                              readOnly
-                              className="block-input"
-                              title="Изменить Номер телефона можно в личном кабинете"
-                            />
-                          )}
-                        </FormGroup>
-                        <FormGroup className="form__group">
-                          {item.address === "-" ? (
-                            <input
-                              type="text"
-                              placeholder="Введите адрес"
-                              value={address}
-                              onChange={(e) => setAddress(e.target.value)}
-                            />
-                          ) : (
-                            <input
-                              type="text"
-                              value={address}
-                              onChange={(e) => setAddress(e.target.value)}
-                              readOnly
-                              className="block-input"
-                              title="Изменить Адрес можно в личном кабинете"
-                            />
-                          )}
-                        </FormGroup>
-                      </Form>
-                    );
-                  }
-                  return null;
-                })
-              )}
-            </Col>
-            <Col lg="4">
-              <div className="checkout__cart">
-                <h6>
-                  Общее количество: <span>{totalQty} шт</span>
-                </h6>
-                <h6>
-                  Стоимость: <span>{totalAmount}₽</span>
-                </h6>
-                <h6>
-                  <span>Скидка:</span>
-                  <span>{discount}%</span>
-                </h6>
-                <h6>
-                  <span>Доставка:</span>
-                  <span>{shippingCost}₽</span>
-                </h6>
-                <h4>
-                  Итого: <span>{totalOrderAmount}₽</span>
-                </h4>
-                <h6>
-                  <span>Оплата товара при получении</span>
-                </h6>
-                <button
-                  className="buy_btn w-100"
-                  type="submit"
-                  onClick={setOrder}
-                >
-                  Оформить заказ
-                </button>
-              </div>
-            </Col>
+            {hasItemsInCart ? (
+              <>
+                <Col lg="8">
+                  <h6 className="mb-4 fw-bold">Адресная информация</h6>
+                  {loading ? (
+                    <h5 className="fw-bold">Loading....</h5>
+                  ) : (
+                    usersData?.map((item) => {
+                      if (item.id === user.uid) {
+                        return (
+                          <Form
+                            key={item.id}
+                            className="billing__form"
+                            onSubmit={setOrder}
+                          >
+                            <FormGroup className="form__group">
+                              {item.FirstName === "-" ? (
+                                <input
+                                  type="text"
+                                  placeholder="Введите ваше имя"
+                                  value={firstName}
+                                  onChange={(e) => setFirstName(e.target.value)}
+                                />
+                              ) : (
+                                <input
+                                  type="text"
+                                  value={firstName}
+                                  onChange={(e) => setFirstName(e.target.value)}
+                                  readOnly
+                                  className="block-input"
+                                  title="Изменить Имя можно в личном кабинете"
+                                />
+                              )}
+                            </FormGroup>
+                            <FormGroup className="form__group">
+                              {item.phoneNumber === "-" ? (
+                                <input
+                                  type="number"
+                                  placeholder="Введите номер телефона"
+                                  value={phoneNumber}
+                                  onChange={(e) =>
+                                    setPhoneNumber(e.target.value)
+                                  }
+                                />
+                              ) : (
+                                <input
+                                  type="text"
+                                  value={phoneNumber}
+                                  onChange={(e) =>
+                                    setPhoneNumber(e.target.value)
+                                  }
+                                  readOnly
+                                  className="block-input"
+                                  title="Изменить Номер телефона можно в личном кабинете"
+                                />
+                              )}
+                            </FormGroup>
+                            <FormGroup className="form__group">
+                              {item.address === "-" ? (
+                                <input
+                                  type="text"
+                                  placeholder="Введите адрес"
+                                  value={address}
+                                  onChange={(e) => setAddress(e.target.value)}
+                                />
+                              ) : (
+                                <input
+                                  type="text"
+                                  value={address}
+                                  onChange={(e) => setAddress(e.target.value)}
+                                  readOnly
+                                  className="block-input"
+                                  title="Изменить Адрес можно в личном кабинете"
+                                />
+                              )}
+                            </FormGroup>
+                            <FormGroup className="form__group">
+                              <h6>Время доставки</h6>
+                              <div className="d-flex">
+                                {deliveryTimes.map((time) => (
+                                  <div
+                                    key={time}
+                                    className={`${
+                                      deliveryTime === time
+                                        ? "delivery-time-btn_selected"
+                                        : "delivery-time-btn"
+                                    }`}
+                                    onClick={() =>
+                                      handleDeliveryTimeChange(time)
+                                    }
+                                  >
+                                    {time}
+                                  </div>
+                                ))}
+                              </div>
+                            </FormGroup>
+                          </Form>
+                        );
+                      }
+                      return null;
+                    })
+                  )}
+                </Col>
+                <Col lg="4">
+                  <div className="checkout__cart">
+                    <h6>
+                      Общее количество: <span>{totalQty} шт</span>
+                    </h6>
+                    <h6>
+                      Стоимость: <span>{totalAmount}₽</span>
+                    </h6>
+                    <h6>
+                      <span>Скидка:</span>
+                      <span>{discount}%</span>
+                    </h6>
+                    <h6>
+                      <span>Доставка:</span>
+                      <span>{shippingCost}₽</span>
+                    </h6>
+                    <h4>
+                      Итого: <span>{totalOrderAmount}₽</span>
+                    </h4>
+                    <h6>
+                      <span>Оплата товара при получении</span>
+                    </h6>
+                    <button
+                      className="buy_btn w-100"
+                      type="submit"
+                      onClick={setOrder}
+                    >
+                      Оформить заказ
+                    </button>
+                  </div>
+                </Col>
+              </>
+            ) : (
+              <Col lg="12">
+                <h3>Ваша корзина пуста.</h3>
+              </Col>
+            )}
           </Row>
         </Container>
       </section>
