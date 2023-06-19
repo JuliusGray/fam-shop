@@ -74,13 +74,13 @@ const Footer = () => {
           </Col>
           <Col lg="12">
             <p className="footer__copyright">
-              © Copyright {year} разработано{" "}
+              © Copyright {year} developed{" "}
               <a
-                href="https://github.com/dixai"
+                href="https://github.com/JuliusGray"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Dixai
+                JuliusGray
               </a>
               . Все права защищены.
             </p>

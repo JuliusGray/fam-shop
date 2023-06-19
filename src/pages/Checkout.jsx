@@ -138,7 +138,6 @@ const Checkout = () => {
 
         if (productDoc.exists()) {
           const productData = productDoc.data();
-
           const newQuantity = productData.qut - item.qty;
 
           await updateDoc(productRef, { qut: newQuantity });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/cart.css";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
@@ -8,12 +8,38 @@ import { cartActions } from "../redux/slices/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { doc, getDoc, query, collection, where } from "firebase/firestore";
+import { db } from "../firebase.config";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const [hasNegativeQuantity, setHasNegativeQuantity] = useState(false);
 
-  const canProceedToCheckout = cartItems.length > 0;
+  useEffect(() => {
+    const checkQuantity = async () => {
+      let foundNegativeQuantity = false;
+
+      for (const item of cartItems) {
+        const productRef = doc(db, "products", item.id);
+        const productDoc = await getDoc(productRef);
+
+        if (productDoc.exists()) {
+          const productData = productDoc.data();
+          if (item.quantity < 0 || productData.qut < 0) {
+            foundNegativeQuantity = true;
+            break;
+          }
+        }
+      }
+
+      setHasNegativeQuantity(foundNegativeQuantity);
+    };
+
+    checkQuantity();
+  }, [cartItems]);
+
+  const canProceedToCheckout = cartItems.length > 0 && !hasNegativeQuantity;
 
   const notify = () => {
     toast.error(
@@ -82,14 +108,18 @@ const Tr = ({ item }) => {
   };
 
   const addToCard = () => {
-    dispatch(
-      cartActions.addItem({
-        id: item.id,
-        productName: item.productName,
-        price: item.price,
-        imgUrl: item.imgUrl,
-      })
-    );
+    if (item.qut >= 0) {
+      dispatch(
+        cartActions.addItem({
+          id: item.id,
+          productName: item.productName,
+          price: item.price,
+          imgUrl: item.imgUrl,
+        })
+      );
+    } else {
+      toast.error("Товара больше нет в наличии.");
+    }
   };
 
   const delProduct = () => {
