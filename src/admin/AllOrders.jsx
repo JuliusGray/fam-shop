@@ -87,6 +87,7 @@ const AllOrders = () => {
                   <th className="text-center">Адрес доставки</th>
                   <th className="text-center">Номер телефона</th>
                   <th className="text-center">Стоимость заказа</th>
+                  <th className="text-center">Время доставки</th>
                   <th className="text-center">Статус заказа</th>
                   <th className="text-center">Товары</th>
                   <th className="text-center">Действие</th>
@@ -101,7 +102,7 @@ const AllOrders = () => {
                   </tr>
                 ) : (
                   ordersData
-                    .sort((a, b) => a.date - b.date)
+                    .sort((a, b) => b.date - a.date)
                     .filter(
                       (item) =>
                         item.status === "В обработке" ||
@@ -117,6 +118,7 @@ const AllOrders = () => {
                           <td>{item.address}</td>
                           <td className="text-center">{item.phoneNumber}</td>
                           <td className="text-center">{item.price}₽</td>
+                          <td className="text-center">{item.deliveryTime}</td>
                           <td className="text-center">{item.status}</td>
                           <td className="text-center">
                             <button
