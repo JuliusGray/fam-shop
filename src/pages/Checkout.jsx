@@ -140,6 +140,13 @@ const Checkout = () => {
           const productData = productDoc.data();
           const newQuantity = productData.qut - item.qty;
 
+          if (newQuantity < 0 || productData.qut === 0) {
+            toast.warning(
+              `Товара "${productData.productName}" больше нет в наличии.`
+            );
+            return;
+          }
+
           await updateDoc(productRef, { qut: newQuantity });
         }
       }

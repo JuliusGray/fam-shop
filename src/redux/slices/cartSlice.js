@@ -87,6 +87,13 @@ const cartSlice = createSlice({
       state.subtotalAmount = 0;
       state.totalOrderAmount = 0;
     },
+    updateItem(state, action) {
+      const { id, quantity } = action.payload;
+      const itemIndex = state.cartItems.findIndex((item) => item.id === id);
+      if (itemIndex !== -1) {
+        state.cartItems[itemIndex].quantity = quantity;
+      }
+    },
   },
 });
 
@@ -101,8 +108,8 @@ const calculateTotalAmount = (cartItems) => {
 
 const applyDiscountAndShippingCost = (state) => {
   const { totalAmount } = state;
-  const discountPer1000 = 5; 
-  const shippingCostBase = 50; 
+  const discountPer1000 = 5;
+  const shippingCostBase = 50;
 
   if (totalAmount >= 1000) {
     let discount = Math.floor(totalAmount / 1000) * discountPer1000;

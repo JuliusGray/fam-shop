@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { motion } from "framer-motion";
 import "../../styles/product-card.css";
@@ -16,26 +16,51 @@ const ProductCard = ({ item }) => {
     const availableInDB = item.qut;
     const alreadyInCart = cartItems.find((cartItem) => cartItem.id === item.id);
 
-    if (
-      availableInDB > 0 &&
-      (!alreadyInCart || alreadyInCart.qut < availableInDB)
-    ) {
-      dispatch(
-        cartActions.addItem({
-          id: item.id,
-          productName: item.productName,
-          price: item.price,
-          imgUrl: item.imgUrl,
-          qut: 1,
-        })
-      );
-      toast.success(
-        "Товар успешно добавлен в корзину. Вы можете продолжить покупки или перейти к оформлению заказа."
-      );
+    if (availableInDB === 0) {
+      toast.error("Товара нет в наличии.");
+      return;
+    }
+
+    if (alreadyInCart && alreadyInCart.quantity >= 10) {
+      toast.warning("Вы уже добавили максимальное количество товара в корзину.");
+      return;
+    }
+
+    if (alreadyInCart) {
+      const totalQuantity = alreadyInCart.quantity + 1;
+      if (totalQuantity <= availableInDB) {
+        dispatch(
+          cartActions.updateItem({
+            id: item.id,
+            quantity: totalQuantity,
+          })
+        );
+        toast.success(
+          "Товар успешно добавлен в корзину. Вы можете продолжить покупки или перейти к оформлению заказа."
+        );
+      } else {
+        toast.warning(
+          "Доступное количество товара недостаточно для добавления в корзину."
+        );
+      }
     } else {
-      toast.error(
-        "Товара больше нет в наличии или уже добавлен в корзину в максимальном количестве."
-      );
+      if (1 <= availableInDB) {
+        dispatch(
+          cartActions.addItem({
+            id: item.id,
+            productName: item.productName,
+            price: item.price,
+            imgUrl: item.imgUrl,
+          })
+        );
+        toast.success(
+          "Товар успешно добавлен в корзину. Вы можете продолжить покупки или перейти к оформлению заказа."
+        );
+      } else {
+        toast.warning(
+          "Доступное количество товара недостаточно для добавления в корзину."
+        );
+      }
     }
   };
 

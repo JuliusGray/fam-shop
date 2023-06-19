@@ -8,7 +8,7 @@ import { cartActions } from "../redux/slices/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { doc, getDoc, query, collection, where } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.config";
 
 const Cart = () => {
@@ -30,6 +30,9 @@ const Cart = () => {
             foundNegativeQuantity = true;
             break;
           }
+        } else {
+          foundNegativeQuantity = true;
+          break;
         }
       }
 
@@ -102,23 +105,39 @@ const Cart = () => {
 
 const Tr = ({ item }) => {
   const dispatch = useDispatch();
+  const maxQuantity = 10;
 
   const deleteProduct = () => {
     dispatch(cartActions.deleteItem(item.id));
   };
 
-  const addToCard = () => {
-    if (item.qut >= 0) {
-      dispatch(
-        cartActions.addItem({
-          id: item.id,
-          productName: item.productName,
-          price: item.price,
-          imgUrl: item.imgUrl,
-        })
-      );
+  const addToCard = async () => {
+    const productRef = doc(db, "products", item.id);
+    const productDoc = await getDoc(productRef);
+
+    if (productDoc.exists()) {
+      const productData = productDoc.data();
+      const availableQuantity = productData.qut;
+
+      if (
+        item.quantity + 1 <= availableQuantity &&
+        item.quantity < maxQuantity
+      ) {
+        dispatch(
+          cartActions.addItem({
+            id: item.id,
+            productName: item.productName,
+            price: item.price,
+            imgUrl: item.imgUrl,
+          })
+        );
+      } else {
+        toast.warning(
+          `Достигнуто максимальное количество товара "${item.productName}".`
+        );
+      }
     } else {
-      toast.error("Товара больше нет в наличии.");
+      toast.error(`Товар "${item.productName}" больше не доступен.`);
     }
   };
 
