@@ -51,14 +51,6 @@ const AllProducts = () => {
                           onClick={() => {
                             deleteProd(item.id);
                           }}
-                          className="btn btn-info my-1"
-                        >
-                          Редактировать
-                        </button>
-                        <button
-                          onClick={() => {
-                            deleteProd(item.id);
-                          }}
                           className="btn btn-danger my-1"
                         >
                           Удалить
