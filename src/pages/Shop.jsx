@@ -70,10 +70,9 @@ const Shop = () => {
                 </select>
               </div>
             </Col>
-            <Col lg="3" md="6" className="text-end">
+            {/* <Col lg="3" md="6" className="text-end">
               <div className="filter__widget">
                 <select>
-                  {/* <option>Сортировать:</option> */}
                   <option value="По популярности">По популярности</option>
                   <option value="Сначала дешевые">Сначала дешевые</option>
                   <option value="Сначала дорогие">Сначала дорогие</option>
@@ -81,7 +80,7 @@ const Shop = () => {
                   <option value="По размеру скидки">По размеру скидки</option>
                 </select>
               </div>
-            </Col>
+            </Col> */}
             <Col lg="6" md="12">
               <div className="search__box">
                 <input
